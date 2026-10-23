@@ -38,6 +38,14 @@ Each card SHALL show the code, company, estimated value, and gift with quantity.
 - **WHEN** an opportunity has no estimated value
 - **THEN** its card shows no value line and no placeholder
 
+#### Scenario: Alert and event share a line
+- **WHEN** a card has an alert and its client event is 7 days away or less
+- **THEN** both are shown on one line, for example "Parada 9 dias · evento 18/10", and the card does not grow an extra line
+
+#### Scenario: No state badge on closed cards
+- **WHEN** a card is in the Fechamento column
+- **THEN** it shows no "Fechada" badge, because the column already states it
+
 #### Scenario: Owner visible to manager only
 - **WHEN** a manager views the board
 - **THEN** each card shows its owner's initial, and a salesperson viewing the same card does not see it
@@ -65,15 +73,19 @@ The toolbar SHALL offer these controls:
 - a "Precisam de atenção" chip with the count of cards that have an alert;
 - situation chips: Atrasada, Adiada, Escalonada, Em dia;
 - an owner filter, for managers only;
-- a "Mostrar perdidas" chip.
+- a "Mostrar perdidas" checkbox.
 
 #### Scenario: Needs attention
 - **WHEN** the user activates "Precisam de atenção"
 - **THEN** only cards with an alert remain, and the chip shows its active state with a check icon
 
 #### Scenario: Show lost
-- **WHEN** the user activates "Mostrar perdidas"
-- **THEN** lost opportunities appear in the column of the stage they were lost from, with the lost badge
+- **WHEN** the user checks "Mostrar perdidas"
+- **THEN** opportunities lost in the last 30 days appear at the end of the column of the stage they were lost from, in lost tones with the lost badge, and are not counted in the column header
+
+#### Scenario: Old lost hidden
+- **WHEN** "Mostrar perdidas" is checked and an opportunity was lost 45 days ago
+- **THEN** it does not appear on the board
 
 ### Requirement: Board state in the URL
 Search text, filters, and sort SHALL be stored in the URL, so that reloading or sharing the link restores the same board.
@@ -122,11 +134,15 @@ While a card is dragged, the board SHALL show a "Marcar como perdida" area. Drop
 - **THEN** the lost dialog opens for that opportunity
 
 ### Requirement: Mobile board
-On viewports narrower than 768px, the board SHALL show one column at a time, with stage tabs that show each stage's card count. Cards SHALL NOT be draggable; stage moves use "Mover para…".
+On viewports narrower than 768px, the board SHALL show one column at a time, with scrollable stage tabs that show each stage's card count. The tabs SHALL use the short labels Contato, Orçamento, Follow-up, Forecast, and Fechamento. Cards SHALL NOT be draggable; stage moves use "Mover para…".
 
 #### Scenario: Switch stage
 - **WHEN** the user taps the "Forecast" tab on a 375px-wide screen
 - **THEN** only the Forecast column is shown
+
+#### Scenario: Short labels
+- **WHEN** the stage tabs are shown on a 375px-wide screen
+- **THEN** they read "Contato", "Orçamento", "Follow-up", "Forecast", and "Fechamento", with no abbreviation dots
 
 ### Requirement: Board loading, error, and empty states
 The board SHALL use the design-system feedback patterns for each state:

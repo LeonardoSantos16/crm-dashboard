@@ -7,6 +7,7 @@
   - layout or flow changes into `design.md` and the specs.
 
   Verify that `openspec validate add-opportunity-funnel` passes and `npm test` stays green.
+- [x] 1.2 Apply the round 1 token changes in `app/globals.css`: `paper-shade` #EAF2EE and `border` #D8E3DC. Add `lost-solid` on `lost-bg` (3:1) to the contrast pairs. Verify with `npm test` and on `/design-tokens`.
 
 ## 2. Data client and mock
 
@@ -32,17 +33,23 @@
 
 ## 4. Board
 
-- [ ] 4.1 Render the five columns with their headers (name, count, alert count) and the cards per W1, including the owner initial for managers only. Verify with component tests for the card content, omitted empty fields, and the header alert count.
+- [ ] 4.1 Render the five columns with their headers (name, count, alert count) and the cards per W1:
+  - the owner initial for managers only;
+  - the state strip at the card's footer;
+  - alert and near event on one line;
+  - no "Fechada" badge in Fechamento.
+
+  Verify with component tests for the card content, omitted empty fields, the shared alert and event line, and the header alert count.
 - [ ] 4.2 Order cards by priority, with "Ordenar por: Valor" as the alternative. Limit Fechamento to the last 30 days, with "Ver todas". Verify with tests for the order and the Fechamento cutoff.
 - [ ] 4.3 Add the toolbar:
   - search that ignores case and accents;
   - "Precisam de atenção" and the situation chips;
   - the owner filter (manager only);
-  - "Mostrar perdidas".
+  - the "Mostrar perdidas" checkbox, showing losses from the last 30 days at the end of their column, outside the count.
 
-  Keep all of it in the URL. Verify with tests and by reloading a shared URL in the browser.
+  Keep all of it in the URL. Verify with tests (including the 30-day cutoff for losses) and by reloading a shared URL in the browser.
 - [ ] 4.4 Add the loading, error, no-match, no-opportunities, and empty-column states with the `components/feedback/` patterns. Verify with component tests for each state's text and action.
-- [ ] 4.5 Build the mobile board with stage tabs and one column at a time. Verify against W4 at 375px.
+- [ ] 4.5 Build the mobile board with scrollable stage tabs (Contato · Orçamento · Follow-up · Forecast · Fechamento) and one column at a time. Verify against W4 at 375px.
 
 ## 5. Moving cards
 
@@ -56,7 +63,14 @@
 
 ## 6. Side panel and detail page
 
-- [ ] 6.1 Build the side panel (W5): `op=` in the URL, summary, alert reason, "Não informado", the blocked-advance notice, and the actions. Clicking the open card again navigates to the page. Verify with tests for the URL, the second click, and keyboard Enter.
+- [ ] 6.1 Build the side panel (W5):
+  - `op=` in the URL;
+  - summary, alert reason, and "Não informado" for empty fields;
+  - "Vencida há N dias" for an expired proposal;
+  - the blocked-advance notice;
+  - the actions, with "Marcar como retornado" as the full-width main action.
+
+  While the panel is open, the board narrows and scrolls horizontally. Clicking the open card again navigates to the page. Verify with tests for the URL, the second click, keyboard Enter, and the expired-proposal text.
 - [ ] 6.2 Build the "Mover para…" menu with disabled stages and their reasons. Verify with a test that a disabled stage shows its reason and cannot be picked.
 - [ ] 6.3 Build the detail page (W6, W7): header with actions, Dados with gift items, and the Atividade timeline, newest first, with type icons. On mobile, Dados and Atividade become tabs. Verify with a test of the timeline order and in the browser at 375px.
 - [ ] 6.4 Add comments: a send button that stays disabled while the box is empty, and no edit or delete. Verify with component tests.

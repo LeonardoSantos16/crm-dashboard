@@ -58,7 +58,7 @@ The manager view shows every element. A salesperson sees the same screen with th
 +----------------------------------------------------------------------------------------------------------------------------------------------+
 +----------------------------------------------------------------------------------------------------------------------------------------------+
 | [Buscar por código ou empresa         ]   [(!) Precisam de atenção (2)]   Situação: (Atrasada) (Adiada) (Escalonada) (Em dia)                |
-| Vendedor: [Todos ▾]   Ordenar por: [Prioridade ▾]   ( ) Mostrar perdidas                                                                     |
+| Vendedor: [Todos ▾]   Ordenar por: [Prioridade ▾]   [ ] Mostrar perdidas                                                                     |
 +----------------------------------------------------------------------------------------------------------------------------------------------+
 
 +--------------------------+ +--------------------------+ +--------------------------+ +--------------------------+ +--------------------------+
@@ -220,8 +220,8 @@ Cards are not draggable on mobile. Tapping a card opens the full-screen panel, w
 | [Buscar código ou empresa] [Filtros·1] |
 | [(!) Precisam de atenção (2)]          |
 |----------------------------------------|
-| ‹ Orçam. 1 │ FOLLOW-UP 2 │ Forecast 1› |
-|              ‾‾‾‾‾‾‾‾‾‾‾               |
+| ‹ Orçamento 1  FOLLOW-UP 2  Forecast › |
+|                ‾‾‾‾‾‾‾‾‾‾‾             |
 | (!) 1 com alerta                       |
 | +------------------------------------+ |
 | | OPP-2004                         C | |
@@ -299,14 +299,17 @@ The panel opens on the right, about 420px wide, over the board. The open card ge
                                                                                  |------------------------------------------------|
                                                                                  | ÚLTIMO CONTATO  06/10/2026                     |
                                                                                  | VALIDADE        13/10/2026                     |
+                                                                                 |                 (i) Vencida há 2 dias          |
                                                                                  | EVENTO          25/10/2026                     |
                                                                                  |------------------------------------------------|
-                                                                                 | [Marcar como retornado]   [Adiar]              |
-                                                                                 | [Mover para… ▾]   [Marcar como perdida]        |
+                                                                                 | [          Marcar como retornado           ]   |
+                                                                                 | [Adiar]  [Mover para… ▾]  [Marcar como perdid… |
                                                                                  |                                                |
                                                                                  | [Abrir detalhes →]                             |
                                                                                  +------------------------------------------------+
 ```
+
+The proposal for OPP-2002 expired on 13/10, so the panel shows "Vencida há 2 dias" under the date. This is information only, not an alert.
 
 **Variant: missing data blocks the next stage.** "Completar dados" opens the same dialog as W9.
 
@@ -607,12 +610,24 @@ The "Responsável" field is locked for a salesperson. For a manager it is the se
 ### 6. Board details settled during the interview
 
 - **Alert count:** "com alerta" and "Precisam de atenção" count attention and escalated, not snoozed.
-- **Lost opportunities:** with "Mostrar perdidas", they appear in the column of the stage they were lost from, with the lost badge. This is an assumption to confirm in the prototype review.
-- **Event date on the card:** shown when the client event is 7 days away or less.
+- **Lost opportunities:** with "Mostrar perdidas" (a checkbox), lost opportunities from the last 30 days appear at the end of the column of the stage they were lost from, in lost tones and outside the header count. This is the same 30-day rule as Fechamento. Confirmed in prototype round 1.
+- **Event date on the card:** shown when the client event is 7 days away or less. When the card also has an alert, both share one line ("Parada 9 dias · evento 18/10"), so the card stays at 5 lines at most.
 - **"Ver todas" in Fechamento:** expands the column to every closed opportunity, through a search param.
-- **Long gift names:** truncated with an ellipsis on the card. The quantity always stays visible.
+- **Gift names:** written in full and truncated with an ellipsis on the card. The quantity always stays visible.
+- **State on the card:** a strip at the card's footer, with `-bg` background, `-solid` icon, and `-fg` text. The event-date strip uses neutral tones. Cards in Fechamento have no "Fechada" badge, because the column already says it.
 
-### 7. Claude Design handoff
+### 7. Prototype round 1 outcomes (Claude Design, 2026-10-23)
+
+Round 1 covered W1, W5 with its blocked variant, the move menu, and the mobile board and panel. Accepted changes:
+- **Tokens:** `paper-shade` #F3F8F5 → #EAF2EE and `border` #E5E5E5 → #D8E3DC (see the `design-system` delta). `rounded-full` and `ring-*` need no new tokens: in Tailwind 4 they do not depend on the cleared theme scales.
+- **Expired proposal:** "Vencida há N dias" with an icon next to the date in the panel and page. It is not an alert.
+- **Panel:** "Marcar como retornado" takes the full first row, as the main action. While the panel is open, the board narrows and scrolls horizontally, so Forecast and Fechamento stay reachable.
+- **Empty fields:** stay "Não informado", not "—", because a dash is read poorly by screen readers.
+- **Mobile stage tabs:** official short labels Contato · Orçamento · Follow-up · Forecast · Fechamento, with no abbreviation dots.
+
+The prototype invented "OPP-2007 · Distribuidora Leste" as a lost example. The case already has OPP-2007 · Padaria do Bairro (Perdida, Ana), which is the one to use.
+
+### 8. Claude Design handoff
 
 Send these files:
 - this `design.md`;

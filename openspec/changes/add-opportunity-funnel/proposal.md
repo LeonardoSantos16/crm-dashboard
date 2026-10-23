@@ -44,7 +44,9 @@ The follow-up automation (problem 4 of the case) shapes these screens. Its rules
 
 ### Modified Capabilities
 
-None. The screens follow `design-system` without changing its requirements.
+- `design-system`: from the Claude Design prototype review (round 1):
+  - `paper-shade` becomes #EAF2EE and `border` becomes #D8E3DC, so columns, cards, and the page background separate;
+  - the spec states that `-solid` state tones are for icons and borders only, never text.
 
 ## Out of Scope
 

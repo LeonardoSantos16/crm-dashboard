@@ -13,6 +13,10 @@ Activating a card SHALL open a side panel over the board with the opportunity's 
 - **WHEN** the user clicks the OPP-2003 card
 - **THEN** a side panel opens with OPP-2003's summary, and the URL contains `op=OPP-2003`
 
+#### Scenario: Every column stays reachable
+- **WHEN** the panel is open on a 1280px-wide screen
+- **THEN** the board narrows to the remaining width and scrolls horizontally, so Forecast and Fechamento can still be reached
+
 #### Scenario: Open from link
 - **WHEN** a user opens a board link that contains `op=OPP-2003`
 - **THEN** the board loads with OPP-2003's panel open
@@ -45,6 +49,21 @@ In the panel and the detail page, an empty field SHALL be shown as "Não informa
 #### Scenario: Blocked advance
 - **WHEN** a Primeiro Contato opportunity has no estimated value and no gift item
 - **THEN** the panel shows "Falta valor estimado e item de brinde para enviar orçamento" with an icon
+
+#### Scenario: Empty date
+- **WHEN** an opportunity has no proposal expiry date
+- **THEN** the panel shows "Não informado" for it, never a dash
+
+### Requirement: Expired proposal notice
+In the panel and the detail page, a proposal expiry date in the past SHALL show an icon and "Vencida há N dias" next to the date. It SHALL NOT be an alert state: it does not change priority, counts, or badges.
+
+#### Scenario: Expired proposal
+- **WHEN** today is 15/10/2026 and OPP-2002's proposal expired on 13/10/2026
+- **THEN** its panel shows "13/10/2026" with an icon and "Vencida há 2 dias", and its alert badge is unchanged
+
+#### Scenario: Valid proposal
+- **WHEN** the proposal expires on 22/10/2026
+- **THEN** only the date is shown
 
 ### Requirement: Move menu
 The panel and the detail page SHALL offer "Mover para…", a menu of stages. Stages the opportunity cannot move to SHALL be disabled and show the reason. This is the way to move on mobile and with the keyboard.
