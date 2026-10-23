@@ -33,6 +33,7 @@ export const contrastPairs: ContrastPair[] = [
     pairs(`${state}-solid`, ["surface"], NON_TEXT),
   ),
   ...pairs("attention-solid", ["attention-bg"], NON_TEXT),
+  ...pairs("lost-solid", ["lost-bg"], NON_TEXT),
   ...pairs("border-strong", ["surface", "paper"], NON_TEXT),
 ];
 
