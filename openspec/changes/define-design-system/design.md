@@ -40,7 +40,6 @@ Every color sits in `@theme` as `--color-<name>`, which generates `bg-*`, `text-
 | `forest-deep` | #174F2D | navigation bar, primary action hover |
 | `moss` | #DDF8E8 | chip background, navigation text |
 | `crown` | #D5C27F | active navigation item and focus on `forest-deep` only |
-| `pitch` | #0C2D1D | reserved for the darkest surface (the site's footer) |
 | `border` | #E5E5E5 | decorative dividers only |
 
 **New**

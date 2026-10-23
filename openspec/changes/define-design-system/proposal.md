@@ -26,7 +26,7 @@ The CRM inherits the identity of Nobre Brindes (nobrebrindes.com.br), checked ag
 
 - Replace the create-next-app styles with design tokens in the Tailwind 4 `@theme` block of `app/globals.css`. This block becomes the single source of truth for colors, fonts, type scale, radii, shadows, and motion. Tailwind's default color palette and font families are cleared, so off-token utilities do not exist.
 - Light theme only. Remove the dark-mode media query.
-- Brand palette from Nobre Brindes: `paper`, `paper-shade`, `surface`, `ink`, `ink-soft`, `forest`, `forest-deep`, `moss`, `crown`, `pitch`, `border`.
+- Brand palette from Nobre Brindes: `paper`, `paper-shade`, `surface`, `ink`, `ink-soft`, `forest`, `forest-deep`, `moss`, `crown`, `border`.
   - Add `border-strong`, a new token: the site's input border (1.48:1) fails the 3:1 non-text contrast rule.
 - State colors for the CRM, each as a `fg` / `bg` / `solid` triple: `attention`, `error`, `success` (Fechamento, reusing the brand green), `lost` (Perdida), `snoozed` (adiado), `escalated` (escalonado).
 - Typography through `next/font/google`:
