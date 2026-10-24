@@ -3,7 +3,7 @@ import { formatCurrency, formatQuantity } from "@/utils/format";
 import type { OpportunityCardProps } from "../_types/board";
 import { CARD_BAND_STYLES, getCardBand } from "../_utils/card";
 
-export const OpportunityCard = ({ card, today, isOwnerVisible }: OpportunityCardProps) => {
+export const OpportunityCard = ({ card, today, isOwnerVisible, isOpen, onOpen }: OpportunityCardProps) => {
   const isLost = card.stage === "LOST";
   const [item, ...otherItems] = card.items;
   const band = useMemo(() => getCardBand(card, today), [card, today]);
@@ -17,44 +17,53 @@ export const OpportunityCard = ({ card, today, isOwnerVisible }: OpportunityCard
     );
 
   const renderValue = () =>
-    card.estimatedValue !== null && <p className="font-mono text-sm font-bold">{formatCurrency(card.estimatedValue)}</p>;
+    card.estimatedValue !== null && (
+      <span className="font-mono text-sm font-bold">{formatCurrency(card.estimatedValue)}</span>
+    );
 
   const renderItem = () =>
     item && (
-      <p className={`flex min-w-0 gap-1 text-sm ${isLost ? "" : "text-ink-soft"}`}>
+      <span className={`flex min-w-0 gap-1 text-sm ${isLost ? "" : "text-ink-soft"}`}>
         <span className="truncate">{item.description}</span>
         <span className="shrink-0 font-mono">· {formatQuantity(item.quantity)}</span>
         {otherItems.length > 0 && <span className="shrink-0">+{otherItems.length}</span>}
-      </p>
+      </span>
     );
 
   const renderBand = () => {
     if (!band) return null;
     const { className, iconClassName } = CARD_BAND_STYLES[band.tone];
     return (
-      <p className={`flex items-center gap-1.5 border-t px-3 py-1 text-xs font-semibold ${className}`}>
+      <span className={`flex items-center gap-1.5 border-t px-3 py-1 text-xs font-semibold ${className}`}>
         <band.icon aria-hidden="true" className={`size-3.5 shrink-0 ${iconClassName}`} />
         {band.text}
-      </p>
+      </span>
     );
   };
 
+  const stateClassName = isLost
+    ? "border-lost-bg bg-lost-bg text-lost-fg"
+    : "border-border bg-surface text-ink shadow-card hover:shadow-lift";
+
   return (
-    <article
-      className={`overflow-hidden rounded-md border ${
-        isLost ? "border-lost-bg bg-lost-bg text-lost-fg" : "border-border bg-surface text-ink shadow-card"
+    <button
+      type="button"
+      onClick={() => onOpen(card.id)}
+      aria-current={isOpen ? "true" : undefined}
+      className={`flex w-full flex-col overflow-hidden rounded-md border text-left transition-shadow ${stateClassName} ${
+        isOpen ? "border-forest ring-2 ring-forest" : ""
       }`}
     >
-      <div className="flex flex-col gap-0.5 px-3 py-2.5">
-        <div className="flex items-center justify-between gap-2">
+      <span className="flex flex-col gap-0.5 px-3 py-2.5">
+        <span className="flex items-center justify-between gap-2">
           <span className="font-mono text-xs font-medium tracking-wide text-ink-soft">{card.code}</span>
           {renderOwner()}
-        </div>
-        <h3 className="truncate text-sm font-semibold">{card.company.name}</h3>
+        </span>
+        <span className="truncate text-sm font-semibold">{card.company.name}</span>
         {renderValue()}
         {renderItem()}
-      </div>
+      </span>
       {renderBand()}
-    </article>
+    </button>
   );
 };

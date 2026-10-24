@@ -4,7 +4,15 @@ import type { BoardColumnProps } from "../_types/board";
 import { isColumnEmpty } from "../_utils/board";
 import { OpportunityCard } from "./OpportunityCard";
 
-export const BoardColumn = ({ column, today, isOwnerVisible, isAllClosed, onToggleAllClosed }: BoardColumnProps) => {
+export const BoardColumn = ({
+  column,
+  today,
+  isOwnerVisible,
+  isAllClosed,
+  onToggleAllClosed,
+  openId,
+  onOpen,
+}: BoardColumnProps) => {
   const isClosing = column.stage === "CLOSING";
   const headingId = `column-${column.stage}`;
 
@@ -36,7 +44,13 @@ export const BoardColumn = ({ column, today, isOwnerVisible, isAllClosed, onTogg
       <ul className="flex flex-col gap-2">
         {[...column.cards, ...column.lostCards].map((card) => (
           <li key={card.id}>
-            <OpportunityCard card={card} today={today} isOwnerVisible={isOwnerVisible} />
+            <OpportunityCard
+              card={card}
+              today={today}
+              isOwnerVisible={isOwnerVisible}
+              isOpen={card.id === openId}
+              onOpen={onOpen}
+            />
           </li>
         ))}
       </ul>
