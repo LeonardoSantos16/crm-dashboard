@@ -1,6 +1,6 @@
 import { AlarmClockOff, CircleCheck, CircleX, ClockAlert, Siren } from "lucide-react";
-import type { OpportunitySummary, Stage } from "@/types/api";
-import type { AlertSummaryData, StateTone } from "@/types/opportunity";
+import type { FunnelStage, OpportunityList, OpportunitySummary, Stage } from "@/types/api";
+import type { AlertSummaryData, CompleteDataRequest, StateTone } from "@/types/opportunity";
 import { formatDate, formatShortDate, toCalendarDate } from "@/utils/dates";
 import { formatQuantity, pluralize } from "@/utils/format";
 import { LOSS_REASON_LABELS } from "@/utils/labels";
@@ -32,9 +32,9 @@ export function isFinalStage(stage: Stage) {
   return stage === "CLOSING" || stage === "LOST";
 }
 
-export function getMissingFields(opportunity: OpportunitySummary) {
+export function getMissingMove(opportunity: OpportunitySummary): CompleteDataRequest | null {
   for (const move of opportunity.moves) {
-    if (move.allowed && move.missing && move.missing.length > 0) return move.missing;
+    if (move.allowed && move.missing && move.missing.length > 0) return { toStage: move.stage, missing: move.missing };
   }
   return null;
 }
@@ -103,4 +103,28 @@ export function formatGift(opportunity: OpportunitySummary) {
 
 export function formatInstantDate(instant: string | null) {
   return instant ? formatDate(toCalendarDate(instant)) : null;
+}
+
+export function moveCardInList(list: OpportunityList, id: number, toStage: Stage): OpportunityList {
+  return {
+    ...list,
+    opportunities: list.opportunities.map((card) => (card.id === id ? { ...card, stage: toStage } : card)),
+  };
+}
+
+export function suggestEstimatedValue(items: { quantity?: number | null; unitValue?: number | null }[]) {
+  let total = 0;
+  for (const item of items) {
+    if (!item.quantity || !item.unitValue) continue;
+    total += item.quantity * item.unitValue;
+  }
+  return total > 0 ? Math.round(total * 100) / 100 : null;
+}
+
+export function isNextSnoozeEscalating(opportunity: OpportunitySummary) {
+  return opportunity.snoozeCount >= 1;
+}
+
+export function findMove(opportunity: OpportunitySummary, stage: FunnelStage) {
+  return opportunity.moves.find((move) => move.stage === stage) ?? null;
 }

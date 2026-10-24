@@ -32,3 +32,28 @@ export type DialogSectionProps = {
 export type FormErrorProps = {
   message: string | undefined;
 };
+
+export type GiftItemFieldValues = {
+  description: string;
+  quantity: number | null;
+  unitValue: number | null;
+};
+
+export type EstimatedValueFieldValues = {
+  estimatedValue: number | null;
+};
+
+export type GiftItemFieldsProps = {
+  idPrefix: string;
+};
+
+export type EstimatedValueFieldProps = {
+  id: string;
+  isRequired?: boolean;
+  suggestion: number | null;
+};
+
+export type SuggestedValueHintProps = {
+  suggestion: number;
+  onUse: () => void;
+};
