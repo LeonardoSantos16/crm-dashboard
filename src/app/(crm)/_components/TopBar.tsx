@@ -1,4 +1,4 @@
-import { Bell, Crown, Plus } from "lucide-react";
+import { Crown } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 import { IdentityMenu } from "./IdentityMenu";
@@ -13,30 +13,11 @@ export function TopBar() {
           Nobre CRM
         </Link>
         <div className="order-last h-11 w-full md:order-none md:h-full md:w-auto">
-          <Suspense fallback={<div className="h-full w-72" />}>
+          <Suspense fallback={<div className="h-full w-36" />}>
             <NavTabs />
           </Suspense>
         </div>
-        <div className="ml-auto flex items-center gap-2 md:gap-4">
-          <button
-            type="button"
-            disabled
-            aria-label="Nova oportunidade"
-            className="inline-flex size-9 items-center justify-center gap-1.5 rounded-md bg-crown text-sm font-semibold text-forest-deep transition-colors enabled:hover:bg-moss disabled:cursor-not-allowed sm:w-auto sm:px-3.5"
-          >
-            <Plus aria-hidden="true" className="size-4" />
-            <span aria-hidden="true" className="hidden sm:inline">
-              Nova oportunidade
-            </span>
-          </button>
-          <button
-            type="button"
-            disabled
-            aria-label="Notificações"
-            className="hidden size-9 items-center justify-center rounded-md text-moss disabled:cursor-not-allowed sm:inline-flex"
-          >
-            <Bell aria-hidden="true" className="size-5" />
-          </button>
+        <div className="ml-auto flex items-center">
           <IdentityMenu />
         </div>
       </div>

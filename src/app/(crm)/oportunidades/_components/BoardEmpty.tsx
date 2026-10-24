@@ -21,5 +21,5 @@ export const BoardEmpty = ({ filters, isManager, onChange }: BoardEmptyProps) =>
     );
   }
 
-  return <EmptyState message="Você ainda não tem oportunidades. Cadastre a primeira para começar a acompanhar o funil." />;
+  return <EmptyState message="Você ainda não tem oportunidades." />;
 };
