@@ -1,5 +1,6 @@
 import { Bell, Crown, Plus } from "lucide-react";
 import Link from "next/link";
+import { Suspense } from "react";
 import { IdentityMenu } from "./IdentityMenu";
 import { NavTabs } from "./NavTabs";
 
@@ -11,7 +12,9 @@ export function TopBar() {
           <Crown aria-hidden="true" className="size-5 text-crown" />
           Nobre CRM
         </Link>
-        <NavTabs />
+        <Suspense fallback={<div className="h-full w-72" />}>
+          <NavTabs />
+        </Suspense>
         <div className="ml-auto flex items-center gap-4">
           <button
             type="button"
