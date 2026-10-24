@@ -1,0 +1,121 @@
+@baseUrl = http://localhost:3333
+
+### Saúde da API e do banco
+GET {{baseUrl}}/health
+
+### Usuários do seletor "Entrando como" (sem identidade)
+# @name users
+GET {{baseUrl}}/api/users
+
+@marcos = {{users.response.body.$.users[0].id}}
+@ana = {{users.response.body.$.users[1].id}}
+@bruno = {{users.response.body.$.users[2].id}}
+@carla = {{users.response.body.$.users[3].id}}
+
+### Quadro do gestor, por prioridade
+GET {{baseUrl}}/api/opportunities
+X-User-Id: {{marcos}}
+
+### Quadro da Ana com as perdidas
+GET {{baseUrl}}/api/opportunities?includeLost=true
+X-User-Id: {{ana}}
+
+### Precisam de atenção (Atrasadas + Escalonadas)
+GET {{baseUrl}}/api/opportunities?situation=ATTENTION&situation=ESCALATED
+X-User-Id: {{marcos}}
+
+### Busca sem acento, ordenada por valor
+GET {{baseUrl}}/api/opportunities?q=clinica&sort=value
+X-User-Id: {{marcos}}
+
+### Filtro por responsável (só gestor) e Fechamento sem corte
+GET {{baseUrl}}/api/opportunities?ownerId={{bruno}}&allClosed=true
+X-User-Id: {{marcos}}
+
+### Detalhe com timeline (OPP-2004, escalonada)
+GET {{baseUrl}}/api/opportunities/2004
+X-User-Id: {{carla}}
+
+### Criar (gestor escolhe alguém do time)
+# @name created
+POST {{baseUrl}}/api/opportunities
+X-User-Id: {{marcos}}
+Content-Type: application/json
+
+{
+  "companyName": "Padaria Nova",
+  "contactName": "Seu Zé",
+  "ownerId": {{ana}}
+}
+
+@newId = {{created.response.body.$.id}}
+
+### Mover para Orçamento sem valor e itens (422 com missing)
+POST {{baseUrl}}/api/opportunities/{{newId}}/move
+X-User-Id: {{ana}}
+Content-Type: application/json
+
+{ "toStage": "BUDGET_PRESENTATION" }
+
+### Completar dados e mover
+POST {{baseUrl}}/api/opportunities/{{newId}}/move
+X-User-Id: {{ana}}
+Content-Type: application/json
+
+{
+  "toStage": "BUDGET_PRESENTATION",
+  "complete": {
+    "estimatedValue": 1200,
+    "items": [{ "description": "Sacola ecológica", "quantity": 100, "unitValue": 12 }]
+  }
+}
+
+### Movimento proibido (409 ONLY_FROM_FORECAST)
+POST {{baseUrl}}/api/opportunities/{{newId}}/move
+X-User-Id: {{ana}}
+Content-Type: application/json
+
+{ "toStage": "CLOSING" }
+
+### Editar contato, datas e itens
+PATCH {{baseUrl}}/api/opportunities/{{newId}}
+X-User-Id: {{ana}}
+Content-Type: application/json
+
+{
+  "contactPhone": "(11) 98888-7777",
+  "eventDate": "2026-11-20",
+  "items": [{ "description": "Sacola ecológica", "quantity": 150, "unitValue": 12 }],
+  "estimatedValue": 1800
+}
+
+### Marcar como retornado
+POST {{baseUrl}}/api/opportunities/{{newId}}/follow-up
+X-User-Id: {{ana}}
+Content-Type: application/json
+
+{ "channel": "WHATSAPP", "summary": "Cliente pediu nova cor", "nextDate": "2026-10-20" }
+
+### Adiar (o 2º seguido escala)
+POST {{baseUrl}}/api/opportunities/{{newId}}/snooze
+X-User-Id: {{ana}}
+Content-Type: application/json
+
+{ "until": "2026-10-22", "reason": "Cliente em viagem" }
+
+### Comentar
+POST {{baseUrl}}/api/opportunities/{{newId}}/comments
+X-User-Id: {{ana}}
+Content-Type: application/json
+
+{ "body": "Cliente pediu amostra" }
+
+### Marcar como perdida
+POST {{baseUrl}}/api/opportunities/{{newId}}/lose
+X-User-Id: {{ana}}
+Content-Type: application/json
+
+{ "reason": "COMPETITOR", "detail": "Fechou com a Brindex" }
+
+### Sem identidade (401)
+GET {{baseUrl}}/api/opportunities
