@@ -1,6 +1,6 @@
 import axios from "axios";
 import type { FieldValues, Path, UseFormSetError } from "react-hook-form";
-import type { ApiError, ApiErrorBody, MissingField, MoveBlockReason, ValidationIssue } from "@/lib/api/types";
+import type { ApiError, ApiErrorBody, MissingField, MoveBlockReason, ValidationIssue } from "@/types/api";
 
 export const MOVE_BLOCK_REASON_LABELS: Record<MoveBlockReason, string> = {
   FINAL_STAGE: "Etapa final: não muda mais",

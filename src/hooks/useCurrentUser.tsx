@@ -2,8 +2,8 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { createContext, useContext, useLayoutEffect, useSyncExternalStore, type ReactNode } from "react";
-import type { User } from "@/lib/api/types";
 import { api, setApiUserId } from "@/lib/axios";
+import type { User } from "@/types/api";
 
 const STORAGE_KEY = "crm.currentUserId";
 

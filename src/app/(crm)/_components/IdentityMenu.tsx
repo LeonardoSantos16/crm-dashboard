@@ -4,7 +4,7 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { Check, ChevronDown } from "lucide-react";
 import { LoadingRegion } from "@/components/feedback/Skeleton";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
-import { ROLE_LABELS } from "@/lib/labels";
+import { ROLE_LABELS } from "@/utils/labels";
 
 export function IdentityMenu() {
   const { user, users, isPending, refetch, selectUser } = useCurrentUser();

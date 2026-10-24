@@ -1,6 +1,6 @@
 import axios, { type AxiosResponse } from "axios";
-import { TODAY_HEADER, USER_HEADER } from "@/lib/api/types";
 import { setToday } from "@/lib/today";
+import { TODAY_HEADER, USER_HEADER } from "@/types/api";
 
 let currentUserId: number | null = null;
 
