@@ -19,10 +19,19 @@
 
 **Non-Goals:**
 - Visual polish. The wireframes fix structure, content, and pt-BR copy. Claude Design decides spacing and visual weight within the design system.
-- The Retornos, Time, and notification screens (`add-follow-up-alerts`).
+- The Retornos, Time, and notification screens (`add-follow-up-alerts`), with their tabs and the bell.
+- Creating and editing opportunities (W8, W11), and the dedicated mobile layout (W4, W7), which are left for later changes.
 - Server-side alert computation and transition validation. The API owns them.
 
 ## Wireframes
+
+### Delivered scope
+
+The wireframes are the design target used for the prototype. The delivered front differs in these points:
+- **Top bar (W1, W5, W6):** only the logo, the "Oportunidades" tab, and the identity selector. No Retornos or Time tabs, no "Nova oportunidade", and no bell.
+- **Drag (W2):** cards can be dragged on desktop, but forbidden columns are not dimmed and there is no lost drop area. A blocked drop restores the card and shows the reason in a toast.
+- **Mobile (W4, W7):** no stage tabs, bottom bar, filters sheet, or detail tabs. The top bar wraps into two rows, the board scrolls sideways inside its area, the panel fills the screen, and the detail page stacks Dados over Atividade.
+- **Detail (W6):** no "Editar" button. W8 (edit modal) and W11 (Nova oportunidade) are not built.
 
 ### How to read them
 
@@ -560,7 +569,6 @@ The "Responsável" field is locked for a salesperson. For a manager it is the se
 | `/` | Redirects to `/oportunidades` |
 | `/oportunidades` | Board. Search, filters, sort, "Ver todas", and the open panel (`op=`) live in the search params. |
 | `/oportunidades/[id]` | Detail page. The API reads opportunities by numeric `id`, so the route and `op=` use it; the screens show the `code`. |
-| `/retornos`, `/time` | Placeholders until `add-follow-up-alerts` |
 
 **Panel state:** the panel is a search param on the board, not a separate route.
 - **Why:** a search param keeps the board's filters and scroll position, and the link can be shared.
@@ -602,6 +610,8 @@ The "Responsável" field is locked for a salesperson. For a manager it is the se
 - It lets the board dim forbidden columns while a card is dragged.
 
 **Mobile:** drag is turned off below 768px, and "Mover para…" is the path instead.
+
+**Delivered:** only the drag itself. The forbidden-column dimming, the lost drop area, and the missing-data dialog on drop are deferred.
 
 **Alternatives considered:**
 - Native HTML5 drag and drop: no touch or keyboard support.

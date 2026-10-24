@@ -101,48 +101,23 @@ On viewports 768px wide and wider, the user SHALL be able to drag a card to anot
 - **WHEN** the user drags OPP-2005 from Forecast to Fechamento
 - **THEN** the card moves to Fechamento and the change is recorded in its history
 
-### Requirement: Forbidden columns marked during drag
-While a card is dragged, columns it cannot move to SHALL be dimmed and SHALL show an icon and the reason as text.
-
-#### Scenario: Fechamento outside Forecast
-- **WHEN** the user drags a Follow-up card
-- **THEN** the Fechamento column is dimmed and shows "Só a partir de Forecast"
-
-### Requirement: Missing data dialog on move
-When a card is dropped on Apresentação de Orçamento without an estimated value or a gift item, the board SHALL open a dialog to fill in the missing data and move it, instead of failing.
-
-#### Scenario: Move without value
-- **WHEN** the user drops OPP-2001, which has no gift item, on Apresentação de Orçamento
-- **THEN** a dialog asks for the missing data, and confirming it saves the data and moves the card
-
-#### Scenario: Cancel
-- **WHEN** the user cancels that dialog
-- **THEN** the card returns to its original column
-
 ### Requirement: Rejected move
-When the API rejects a move, the card SHALL return to its original column and the API's reason SHALL be shown in pt-BR.
+When the API rejects a move, the card SHALL return to its original column and the API's reason SHALL be shown in pt-BR. This includes a drop on Apresentação de Orçamento with missing data; the missing-data dialog opens from "Mover para…".
 
 #### Scenario: API rejects
 - **WHEN** the API rejects a move
 - **THEN** the card is back in its column and a message with an error icon shows the reason
 
-### Requirement: Lost drop area
-While a card is dragged, the board SHALL show a "Marcar como perdida" area. Dropping a card there SHALL open the lost dialog.
+#### Scenario: Drop with missing data
+- **WHEN** the user drops OPP-2001, which has no gift item, on Apresentação de Orçamento
+- **THEN** the card returns to Primeiro Contato and the message says which data is missing
 
-#### Scenario: Drop on lost
-- **WHEN** the user drops a card on "Marcar como perdida"
-- **THEN** the lost dialog opens for that opportunity
+### Requirement: Board on small screens
+On viewports narrower than 768px, the board SHALL scroll horizontally inside its own area, and the page SHALL NOT scroll horizontally. Cards SHALL NOT be draggable; stage moves use "Mover para…".
 
-### Requirement: Mobile board
-On viewports narrower than 768px, the board SHALL show one column at a time, with scrollable stage tabs that show each stage's card count. The tabs SHALL use the short labels Contato, Orçamento, Follow-up, Forecast, and Fechamento. Cards SHALL NOT be draggable; stage moves use "Mover para…".
-
-#### Scenario: Switch stage
-- **WHEN** the user taps the "Forecast" tab on a 375px-wide screen
-- **THEN** only the Forecast column is shown
-
-#### Scenario: Short labels
-- **WHEN** the stage tabs are shown on a 375px-wide screen
-- **THEN** they read "Contato", "Orçamento", "Follow-up", "Forecast", and "Fechamento", with no abbreviation dots
+#### Scenario: Board at 375px
+- **WHEN** the board opens on a 375px-wide screen
+- **THEN** the toolbar wraps, the columns scroll sideways inside the board, and the page has no horizontal scroll
 
 ### Requirement: Board loading, error, and empty states
 The board SHALL use the design-system feedback patterns for each state:
@@ -150,7 +125,7 @@ The board SHALL use the design-system feedback patterns for each state:
 - **Load failure:** an error in place of the board, with "Tentar novamente".
 - **Search with no match:** a message naming the search, with "Limpar busca".
 - **Empty column:** "Nenhuma oportunidade nesta etapa".
-- **User with no opportunities:** a message with "Nova oportunidade".
+- **User with no opportunities:** "Você ainda não tem oportunidades."
 
 #### Scenario: No search result
 - **WHEN** the search "xyz" matches no opportunity
@@ -158,4 +133,4 @@ The board SHALL use the design-system feedback patterns for each state:
 
 #### Scenario: No opportunities at all
 - **WHEN** the active salesperson owns no opportunity
-- **THEN** the board shows "Você ainda não tem oportunidades." and a "Nova oportunidade" action
+- **THEN** the board shows "Você ainda não tem oportunidades."

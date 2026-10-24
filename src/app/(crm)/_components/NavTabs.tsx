@@ -2,23 +2,16 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
 
-const TABS = [
-  { href: "/oportunidades", label: "Oportunidades", isManagerOnly: false },
-  { href: "/retornos", label: "Retornos", isManagerOnly: false },
-  { href: "/time", label: "Time", isManagerOnly: true },
-];
+const TABS = [{ href: "/oportunidades", label: "Oportunidades" }];
 
 export function NavTabs() {
   const pathname = usePathname();
-  const { user } = useCurrentUser();
-  const tabs = TABS.filter((tab) => !tab.isManagerOnly || user?.role === "MANAGER");
 
   return (
     <nav aria-label="Principal" className="h-full">
       <ul className="flex h-full">
-        {tabs.map((tab) => {
+        {TABS.map((tab) => {
           const isActive = pathname === tab.href || pathname.startsWith(`${tab.href}/`);
           return (
             <li key={tab.href} className="flex">

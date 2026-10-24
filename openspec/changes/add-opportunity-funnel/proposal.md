@@ -9,9 +9,8 @@ The follow-up automation (problem 4 of the case) shapes these screens. Its rules
 ## What Changes
 
 - **App shell:**
-  - A dark top bar with the "Nobre CRM" logo and the tabs Oportunidades · Retornos · Time. Time is shown to managers only.
-  - A "Nova oportunidade" button, a notification bell slot, and a demo identity selector ("Entrando como").
-  - On mobile, the tabs move to a fixed bottom bar.
+  - A dark top bar with the "Nobre CRM" logo, the Oportunidades tab, and a demo identity selector ("Entrando como").
+  - On mobile, the bar wraps into two rows so the page never scrolls sideways.
 - **Identity without login:** the selected user is sent to the API with every request, and the API filters opportunities by role: a salesperson sees their own, a manager sees the team's. No login screen is built.
 - **Oportunidades (Kanban):**
   - Columns: the five stages. Fechamento shows the last 30 days only.
@@ -19,27 +18,26 @@ The follow-up automation (problem 4 of the case) shapes these screens. Its rules
   - Card: code, company, value, gift · quantity, alert badge, and the client event date when it is near.
   - Cards are ordered by priority inside each column.
   - Toolbar: search, filters, and sort, all kept in the URL.
-  - Moving a card: drag and drop, with forbidden columns marked during the drag; a dialog to fill in missing data; a drop area to mark the card as lost.
+  - Moving a card: drag and drop on desktop, and the "Mover para…" menu everywhere, which explains blocked moves and opens a dialog to fill in missing data.
   - All loading, error, and empty states.
-  - On mobile, one column at a time with stage tabs.
+  - On mobile, the board scrolls sideways inside its own area.
 - **Opportunity detail:**
-  - A side panel opens on the first click, with a summary and actions.
+  - A side panel opens on the first click, with a summary and actions. On mobile it fills the screen.
   - A full page opens on the second click or from "Abrir detalhes": data, gift items, and an Activity timeline with comments and history.
-  - Editing uses a modal.
 - **Dialogs:**
   - Marcar como retornado.
   - Adiar.
   - Marcar como perdida (reason list plus detail).
-  - Nova oportunidade.
+  - Completar dados (missing data before a move).
 - **Wireframes:** ASCII wireframes for every screen, state, and dialog above, desktop and mobile, in `design.md`. They are the input for the Claude Design prototype.
 
 ## Capabilities
 
 ### New Capabilities
 
-- `app-shell`: the top bar, navigation tabs, demo identity selector, and role-based visibility of tabs and data.
+- `app-shell`: the top bar, navigation, demo identity selector, and role-based visibility of data.
 - `opportunity-board`: the Kanban of opportunities: columns, cards, ordering, search, filters, stage moves by drag and drop, and the board's loading, error, and empty states.
-- `opportunity-detail`: viewing and editing one opportunity: side panel, detail page, edit modal, gift items, activity timeline with comments, move menu, lost dialog, and creating an opportunity.
+- `opportunity-detail`: viewing one opportunity: side panel, detail page, gift items, activity timeline with comments, move menu, missing-data dialog, and lost dialog.
 - `follow-up-actions`: showing why an opportunity needs follow-up, and the "Marcar como retornado" and "Adiar" actions with their dialogs.
 
 ### Modified Capabilities
@@ -50,8 +48,10 @@ The follow-up automation (problem 4 of the case) shapes these screens. Its rules
 
 ## Out of Scope
 
-- **Second change (`add-follow-up-alerts`):** the Retornos list, the Time view, and the notification menu. This change only reserves their tabs and the bell slot.
-- **Lead intake:** leads come in manually, through "Nova oportunidade". Automatic intake from the website goes in the README as a future step.
+- **Second change (`add-follow-up-alerts`):** the Retornos list, the Time view, and the notification menu, with their tabs and the bell.
+- **Creating and editing opportunities:** the "Nova oportunidade" dialog and the edit modal (wireframes W8 and W11) are left for a later change. Opportunities come from the API seed. Lead intake, manual or from the website, goes in the README as a future step.
+- **Dedicated mobile layout:** bottom bar, stage tabs, filters bottom sheet, and detail tabs. This change only keeps the screens usable at 375px.
+- **Drag extras:** marking forbidden columns during the drag, the drop area to mark a card as lost, and opening the missing-data dialog on drop. A blocked drop restores the card and explains why in a toast.
 - **Real authentication** (JWT/SSO). The README describes it.
 - **Comment management:** editing, deleting, and @mentions.
 - **Wider filters:** value range and event period filters.
