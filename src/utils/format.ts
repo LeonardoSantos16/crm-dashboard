@@ -16,6 +16,10 @@ export function formatCurrency(value: number) {
   return Number.isInteger(value) ? wholeCurrency.format(value) : centsCurrency.format(value);
 }
 
+export function formatCurrencyWithCents(value: number) {
+  return centsCurrency.format(value);
+}
+
 export function formatQuantity(value: number) {
   return integer.format(value);
 }

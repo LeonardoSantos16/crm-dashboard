@@ -28,6 +28,10 @@ export function getApiError(error: unknown): ApiError | null {
   return error.response?.data?.error ?? null;
 }
 
+export function isNotFoundError(error: unknown) {
+  return getApiError(error)?.code === "NOT_FOUND";
+}
+
 export function getErrorMessage(error: unknown) {
   const apiError = getApiError(error);
   if (!apiError) return NETWORK_ERROR_MESSAGE;
