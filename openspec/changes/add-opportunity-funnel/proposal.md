@@ -2,7 +2,7 @@
 
 ## Why
 
-The CRM has a design system but no screens. The case asks for a Kanban funnel where a salesperson lists, searches, filters, and opens opportunities and moves them between stages, and it is judged on whether the salesperson finds the deal to work on today. This change defines those screens as wireframes, so they can be prototyped in Claude Design before any screen code is written.
+The CRM has a design system but no screens. The case asks for a Kanban funnel where a salesperson lists, searches, filters, and opens opportunities and moves them between stages, and it is judged on whether the salesperson finds the deal to work on today. This change defines those screens as wireframes, prototyped in Claude Design, and builds them on top of the `crm-api`, the separate REST API that now exists. The front consumes the contract in `docs/integracao-api/`.
 
 The follow-up automation (problem 4 of the case) shapes these screens. Its rules come from the decision document "Case CRM — Automação & Qualidade: decisões" (16 decisions): an alert fires on inactivity in the current stage, priority is the share of the stage deadline already used, and the salesperson can mark an alert as followed up or snooze it.
 
@@ -51,19 +51,19 @@ The follow-up automation (problem 4 of the case) shapes these screens. Its rules
 ## Out of Scope
 
 - **Second change (`add-follow-up-alerts`):** the Retornos list, the Time view, and the notification menu. This change only reserves their tabs and the bell slot.
-- **Stage-return rules:** which backward moves are allowed (for example, Follow-up → Apresentação de Orçamento) is still open. The wireframes show the generic "forbidden column" pattern, and the API owns the rule.
-- **Real stage deadlines:** the numbers in the wireframes are examples.
 - **Lead intake:** leads come in manually, through "Nova oportunidade". Automatic intake from the website goes in the README as a future step.
 - **Real authentication** (JWT/SSO). The README describes it.
 - **Comment management:** editing, deleting, and @mentions.
 - **Wider filters:** value range and event period filters.
-- **API, database, and alert worker:** the backend that computes alerts and validates transitions.
+- **API, database, and alert worker:** they live in the separate `crm-api` repository, which computes alerts, stage deadlines, ordering, and allowed moves.
+- **Component and flow tests:** this change adds no new tests. A later change, `add-funnel-test-coverage`, covers the spec scenarios.
 
 ## Impact
 
 - **Docs:** this change's `design.md` holds the wireframes. Claude Design receives it together with `openspec/specs/design-system/spec.md` and the `@theme` block of `app/globals.css`.
 - **Prototype feedback:** visual adjustments that come back from Claude Design go into `@theme` and the design-system spec. Layout or flow changes are folded into this change before it is applied.
 - **Code, when applied:**
-  - The root route (`app/page.tsx`, still the create-next-app placeholder) is replaced by the Oportunidades screen.
-  - New routes, components, and a data client go under `app/` and `components/`.
-- **Dependencies:** possibly a drag-and-drop library, chosen in `design.md`.
+  - `app/` moves to `src/app/`, and the code follows `docs/padroes.md`: routes in `src/app/`, shared components in `src/components/`, hooks in `src/hooks/`, and the API client in `src/lib/`.
+  - The root route (still the create-next-app placeholder) is replaced by the Oportunidades screen.
+  - The design-system tests scan `src/`.
+- **Dependencies:** `@tanstack/react-query`, `axios`, `react-hook-form`, `zod`, `@hookform/resolvers`, `@radix-ui/react-dialog`, `@radix-ui/react-dropdown-menu`, and `@dnd-kit`.

@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { EmptyState } from "@/components/feedback/EmptyState";
 import { LoadingRegion, Skeleton } from "@/components/feedback/Skeleton";
 import { StatusBadge, type StatusState } from "@/components/feedback/StatusBadge";
-import { contrastPairs, contrastRatio, readColorTokens } from "@/tests/design-system/contrast";
+import { contrastPairs, contrastRatio, readColorTokens } from "../../../tests/design-system/contrast";
 import { FeedbackDemo } from "./FeedbackDemo";
 
 const statuses: StatusState[] = ["attention", "error", "success", "lost", "snoozed", "escalated"];
