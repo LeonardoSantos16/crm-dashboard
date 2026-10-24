@@ -1,4 +1,4 @@
-import type { CalendarDate, IsoInstant } from "@/lib/api/types";
+import type { CalendarDate, IsoInstant } from "@/types/api";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 const TIME_ZONE = "America/Sao_Paulo";

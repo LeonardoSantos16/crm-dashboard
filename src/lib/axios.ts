@@ -1,6 +1,6 @@
 import axios, { type AxiosResponse } from "axios";
-import { TODAY_HEADER, USER_HEADER } from "@/lib/api/types";
 import { setToday } from "@/lib/today";
+import { TODAY_HEADER, USER_HEADER } from "@/types/api";
 
 let currentUserId: number | null = null;
 
@@ -8,7 +8,7 @@ export function setApiUserId(id: number | null) {
   currentUserId = id;
 }
 
-export const api = axios.create({ baseURL: "/api" });
+export const api = axios.create({ baseURL: "/api", paramsSerializer: { indexes: null } });
 
 function readToday(response: AxiosResponse | undefined) {
   const value = response?.headers[TODAY_HEADER.toLowerCase()];

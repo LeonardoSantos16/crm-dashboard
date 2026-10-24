@@ -1,4 +1,4 @@
-import type { CalendarDate } from "@/lib/api/types";
+import type { CalendarDate } from "@/types/api";
 
 let today: CalendarDate | null = null;
 const listeners = new Set<() => void>();

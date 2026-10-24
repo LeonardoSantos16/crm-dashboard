@@ -571,11 +571,11 @@ The "Responsável" field is locked for a salesperson. For a manager it is the se
 **Approach:**
 - Pages are server-component shells. The interactive parts are client components that read and write through TanStack Query v5 and one axios instance (`src/lib/axios.ts`, `baseURL: "/api"`).
 - A rewrite in `next.config.ts` sends `/api/:path*` to `${API_URL}/api/:path*`, so the browser talks to its own origin and needs no CORS. `API_URL` is documented in `.env.example`.
-- `src/lib/api/types.ts` is a copy of `docs/integracao-api/crm-api-front-types.ts` and the only place response types are declared.
-- **Today:** a response interceptor keeps the last `X-Today` header, read through `useToday()`. Date logic ("Vencida há N dias", event within 7 days, the 30-day window) lives in pure functions in `src/lib/dates.ts` that take `today` as an argument. The browser's date is never used.
+- `src/types/api.ts` is a copy of `docs/integracao-api/crm-api-front-types.ts` and the only place response types are declared.
+- **Today:** a response interceptor keeps the last `X-Today` header, read through `useToday()`. Date logic ("Vencida há N dias", event within 7 days, the 30-day window) lives in pure functions in `src/utils/dates.ts` that take `today` as an argument. The browser's date is never used.
 - **List filters:** the search params use the API's own names (`q`, `situation`, `ownerId`, `sort`, `allClosed`, `includeLost`), so they go straight into the request `params`. The front only groups the returned list by `stage`, or by `lostFromStage` for lost cards.
 - **After an action:** every action returns the updated detail. Its hook writes it with `setQueryData` and invalidates the list, which also refreshes `needsAttention`.
-- **Errors:** `src/lib/api/errors.ts` turns `code` and `details.reason` into pt-BR text, and maps `VALIDATION_ERROR` paths onto form fields.
+- **Errors:** `src/utils/apiErrors.ts` turns `code` and `details.reason` into pt-BR text, and maps `VALIDATION_ERROR` paths onto form fields.
 
 **Alternatives considered:**
 - Server components fetching with a cookie. Rejected: the board is highly interactive (optimistic moves, invalidation after each action, filters that change constantly), and mixing server actions with revalidation adds more moving parts than a client cache.
@@ -665,7 +665,7 @@ Ask for a prototype of W1 to W13 that uses only those tokens.
 
 ### 11. Code layout
 
-The code lives under `src/` (`src/app`, `src/components`, `src/hooks`, `src/lib`), with the `@/*` alias pointing to `./src/*`. Components used by one route go in that route's `_components/` folder. `docs/padroes.md` holds the full conventions.
+The code lives under `src/` (`src/app`, `src/components`, `src/hooks`, `src/lib` for infrastructure clients, `src/types`, `src/utils`), with the `@/*` alias pointing to `./src/*`. Components, hooks, types, and helpers used by one route go in that route's `_components/`, `_hooks/`, `_types/`, and `_utils/` folders. `docs/padroes.md` holds the full conventions.
 
 The design-system tests scan `src/` and read `src/app/globals.css`.
 
@@ -681,7 +681,7 @@ The tasks are grouped into slices: foundation, shell, board, panel and detail, d
 
 - **[The board is too wide below 1280px]** → The board scrolls horizontally inside its own area. The top bar and toolbar stay fixed.
 - **[The second click is hard to discover]** → "Abrir detalhes" is always in the panel. The second click is only a shortcut.
-- **[The types duplicated in both repositories drift apart]** → `src/lib/api/types.ts` is the only copy in the front. Compare it with `docs/integracao-api/crm-api-front-types.ts` when the API changes. The README lists the duplication as a limitation.
+- **[The types duplicated in both repositories drift apart]** → `src/types/api.ts` is the only copy in the front. Compare it with `docs/integracao-api/crm-api-front-types.ts` when the API changes. The README lists the duplication as a limitation.
 - **[No tests in this change, so regressions only show up in the browser]** → Each task is checked against its spec scenarios, and `add-funnel-test-coverage` follows this change.
 - **[A salesperson marks a follow-up that did not happen]** → Accepted limitation, from the decision document. The date stays in the timeline.
 

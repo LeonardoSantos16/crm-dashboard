@@ -1,8 +1,20 @@
 import type { Metadata } from "next";
-import { Placeholder } from "../_components/Placeholder";
+import { Suspense } from "react";
+import { Board } from "./_components/Board";
+import { BoardSkeleton } from "./_components/BoardSkeleton";
 
 export const metadata: Metadata = { title: "Oportunidades" };
 
-export default function OpportunitiesPage() {
-  return <Placeholder title="Oportunidades" message="O quadro de oportunidades chega na próxima fatia." />;
-}
+const OpportunitiesPage = () => (
+  <Suspense
+    fallback={
+      <div className="px-6 py-5">
+        <BoardSkeleton />
+      </div>
+    }
+  >
+    <Board />
+  </Suspense>
+);
+
+export default OpportunitiesPage;

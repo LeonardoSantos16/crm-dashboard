@@ -25,11 +25,11 @@ Each group from 2 to 8 is one slice: one branch off `develop` and one PR into `d
   - `dates.ts`.
 
   Verify with `npm run typecheck`.
-- [ ] 2.4 Add `src/app/providers.tsx` with `QueryClientProvider` and `CurrentUserProvider` (`localStorage`, first `SELLER` as default), plus `useCurrentUser` and `useToday`, and render it in the root layout. Verify in the browser that requests carry `X-User-Id` and that the chosen user survives a reload.
+- [x] 2.4 Add `src/app/providers.tsx` with `QueryClientProvider` and `CurrentUserProvider` (`localStorage`, first `SELLER` as default), plus `useCurrentUser` and `useToday`, and render it in the root layout. Verify in the browser that requests carry `X-User-Id` and that the chosen user survives a reload.
 
 ## 3. App shell (`feat/funnel-shell`)
 
-- [ ] 3.1 Build the top bar per W1:
+- [x] 3.1 Build the top bar per W1:
   - logo and tabs, with `aria-current` on the active tab and "Time" for managers only;
   - "Nova oportunidade" and the bell slot;
   - the "Entrando como" selector labeled as demo mode.
@@ -39,26 +39,26 @@ Each group from 2 to 8 is one slice: one branch off `develop` and one PR into `d
 
 ## 4. Board (`feat/funnel-board`)
 
-- [ ] 4.1 Add `useOpportunities` and `groupByStage`:
+- [x] 4.1 Add `useOpportunities` and `groupByStage`:
   - lost cards go at the end of their `lostFromStage` column, outside the count;
   - "com alerta" counts `ATTENTION` and `ESCALATED` only.
 
   Verify as Ana with "Mostrar perdidas": OPP-2007 is at the end of its column and not counted.
-- [ ] 4.2 Render the five columns with their headers (name, count, alert count) and the cards per W1:
+- [x] 4.2 Render the five columns with their headers (name, count, alert count) and the cards per W1:
   - the owner initial for managers only;
   - the state strip at the card's footer;
   - alert and near event on one line;
   - no "Fechada" badge in Fechamento.
 
   Verify against W1 in the browser as Marcos and as Ana.
-- [ ] 4.3 Add the toolbar through `useBoardFilters`:
+- [x] 4.3 Add the toolbar through `useBoardFilters`:
   - search with a 300 ms debounce;
   - "Precisam de atenção (N)" from `needsAttention`, and the situation chips;
   - the owner filter (manager only), the sort, and "Mostrar perdidas";
   - "Ver todas" in Fechamento through `allClosed`.
 
   Keep all of it in the URL with the API's parameter names, inside `<Suspense>`. Verify by reloading a shared URL in the browser.
-- [ ] 4.4 Add the loading, error, no-match, no-filter-match, no-opportunities, and empty-column states with the `src/components/feedback/` patterns. Verify each state in the browser; for the error state, stop the `crm-api`.
+- [x] 4.4 Add the loading, error, no-match, no-filter-match, no-opportunities, and empty-column states with the `src/components/feedback/` patterns. Verify each state in the browser; for the error state, stop the `crm-api`.
 
 ## 5. Side panel and detail page (`feat/funnel-detail`)
 
