@@ -5,6 +5,7 @@ import { LoadingRegion, Skeleton } from "@/components/feedback/Skeleton";
 import { StatusBadge, type StatusState } from "@/components/feedback/StatusBadge";
 import { contrastPairs, contrastRatio, readColorTokens } from "../../../tests/design-system/contrast";
 import { FeedbackDemo } from "./FeedbackDemo";
+import { FormDemo } from "./FormDemo";
 
 const statuses: StatusState[] = ["attention", "error", "success", "lost", "snoozed", "escalated"];
 
@@ -148,6 +149,10 @@ export default function DesignTokensPage() {
           <div className="rounded-sm bg-paper-shade">
             <EmptyState message="Nenhuma oportunidade nesta etapa." />
           </div>
+        </Section>
+
+        <Section title="Avisos e campo de valor">
+          <FormDemo />
         </Section>
 
         <Section title="Cartão">

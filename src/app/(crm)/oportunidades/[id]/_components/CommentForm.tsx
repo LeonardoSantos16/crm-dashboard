@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
-import { useAddComment } from "@/hooks/opportunities/useAddComment";
+import { useComment } from "@/hooks/opportunities/useOpportunityAction";
 import { applyValidationErrors, getErrorMessage } from "@/utils/apiErrors";
 import { BUTTON_STYLES } from "@/utils/buttonStyles";
 import type { CommentFormProps } from "../_types/detail";
@@ -15,7 +15,7 @@ const commentSchema = z.object({
 type CommentData = z.infer<typeof commentSchema>;
 
 export const CommentForm = ({ opportunityId }: CommentFormProps) => {
-  const addComment = useAddComment(opportunityId);
+  const addComment = useComment(opportunityId);
   const {
     register,
     handleSubmit,

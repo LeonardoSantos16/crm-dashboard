@@ -75,13 +75,13 @@ Each group from 2 to 8 is one slice: one branch off `develop` and one PR into `d
 
 ## 6. Dialogs and actions (`feat/funnel-actions`)
 
-- [ ] 6.1 Add `Toast` to `src/components/feedback/` and `MoneyInput` to `src/components/form/`. Verify on `/design-tokens` and with `npm test`.
-- [ ] 6.2 Build the "Mover para…" menu (Radix) with disabled stages and their reasons from `moves`, and an optimistic move with rollback and a `Toast`. Verify in the browser that Fechamento is disabled for a Follow-up card, and that a rejected move returns the card with the message.
-- [ ] 6.3 Build the missing-data dialog (W9), opened when the chosen move has `missing`. It calls `/move` with `complete`. Verify with a new opportunity moved to Apresentação de Orçamento.
-- [ ] 6.4 Build the lost dialog (W10): a required reason, a detail field required for "Outro", and lost tones. Verify both validation messages in the browser.
-- [ ] 6.5 Build "Marcar como retornado" (W12): channel buttons, summary, a next date after today and up to 30 days, and the default-deadline hint from `alert.deadlineDays`. Verify the hint and the 30-day limit in the browser.
-- [ ] 6.6 Build "Adiar" (W13): a required date up to 30 days, an optional reason, and the escalation warning when `snoozeCount` is 1. Verify in the browser by snoozing twice in a row.
-- [ ] 6.7 Hide "Marcar como retornado" and "Adiar" for opportunities in Fechamento and Perdida. Verify with OPP-2006 in the browser.
+- [x] 6.1 Add `Toast` to `src/components/feedback/` and `MoneyInput` to `src/components/form/`. Verify on `/design-tokens` and with `npm test`.
+- [x] 6.2 Build the "Mover para…" menu (Radix) with disabled stages and their reasons from `moves`, and an optimistic move with rollback and a `Toast`. Verify in the browser that Fechamento is disabled for a Follow-up card, and that a rejected move returns the card with the message.
+- [x] 6.3 Build the missing-data dialog (W9), opened when the chosen move has `missing`. It calls `/move` with `complete`. Verify with a new opportunity moved to Apresentação de Orçamento.
+- [x] 6.4 Build the lost dialog (W10): a required reason, a detail field required for "Outro", and lost tones. Verify both validation messages in the browser.
+- [x] 6.5 Build "Marcar como retornado" (W12): channel buttons, summary, a next date after today and up to 30 days, and the default-deadline hint from `alert.deadlineDays`. Verify the hint and the 30-day limit in the browser.
+- [x] 6.6 Build "Adiar" (W13): a required date up to 30 days, an optional reason, and the escalation warning when `snoozeCount` is 1. Verify in the browser by snoozing twice in a row.
+- [x] 6.7 Hide "Marcar como retornado" and "Adiar" for opportunities in Fechamento and Perdida. Verify with OPP-2006 in the browser.
 - [ ] 6.8 Build the "Nova oportunidade" dialog (W11): the owner is locked for a salesperson and a select of the team for a manager. The new opportunity starts in Primeiro Contato and its panel opens. Verify as Ana and as Marcos.
 - [ ] 6.9 Build the edit modal (W8):
   - field validation, with server errors shown on their fields;

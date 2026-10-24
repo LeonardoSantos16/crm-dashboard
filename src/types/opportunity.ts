@@ -1,6 +1,8 @@
 import type { LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
-import type { OpportunitySummary } from "@/types/api";
+import type { FollowUpChannel, FunnelStage, LossReason, MissingField, OpportunitySummary } from "@/types/api";
+
+export type ActionPath = "follow-up" | "snooze" | "lose" | "comments";
 
 export type StateTone = "attention" | "escalated" | "snoozed" | "lost" | "success";
 
@@ -39,4 +41,45 @@ export type MissingDataNoticeProps = {
 export type OpportunityActionsProps = {
   opportunity: OpportunitySummary;
   layout: "panel" | "header";
+};
+
+export type OpportunityDialogProps = {
+  opportunity: OpportunitySummary;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+};
+
+export type CompleteDataDialogProps = OpportunityDialogProps & {
+  toStage: FunnelStage;
+  missing: MissingField[];
+};
+
+export type CompleteDataRequest = {
+  toStage: FunnelStage;
+  missing: MissingField[];
+};
+
+export type MoveMenuProps = {
+  opportunity: OpportunitySummary;
+  onRequestComplete: (request: CompleteDataRequest) => void;
+};
+
+export type OpportunityDialog = "followUp" | "snooze" | "lost";
+
+export type DialogHeadingProps = {
+  opportunity: OpportunitySummary;
+  showStage?: boolean;
+};
+
+export type ChannelPickerProps = {
+  value: FollowUpChannel | null;
+  onChange: (value: FollowUpChannel | null) => void;
+};
+
+export type LossReasonFieldValues = {
+  reason: LossReason | undefined;
+};
+
+export type OpportunityNoticeProps = {
+  opportunity: OpportunitySummary;
 };
