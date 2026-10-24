@@ -39,7 +39,7 @@ type CompleteData = z.infer<typeof completeSchema>;
 const DEFAULT_VALUES: CompleteData = { description: "", quantity: null, unitValue: null, estimatedValue: null };
 
 export const CompleteDataDialog = ({ opportunity, toStage, missing, open, onOpenChange }: CompleteDataDialogProps) => {
-  const move = useMoveOpportunity(opportunity.id);
+  const move = useMoveOpportunity();
   const resolver = useMemo(() => zodResolver(createCompleteSchema(missing)), [missing]);
   const needsItem = missing.includes("items");
   const needsValue = missing.includes("estimatedValue");
@@ -64,6 +64,7 @@ export const CompleteDataDialog = ({ opportunity, toStage, missing, open, onOpen
   const onSubmit = async (data: CompleteData) => {
     try {
       await move.mutateAsync({
+        id: opportunity.id,
         toStage,
         complete: {
           estimatedValue: data.estimatedValue ?? undefined,

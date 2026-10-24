@@ -1,3 +1,4 @@
+import type { DraggableAttributes, DraggableSyntheticListeners } from "@dnd-kit/core";
 import type { LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import type { AlertState, FunnelStage, OpportunityCard, User } from "@/types/api";
@@ -35,12 +36,29 @@ export type SituationChip = {
   pressedClassName: string;
 };
 
+export type CardDragHandle = {
+  ref: (element: HTMLElement | null) => void;
+  attributes: DraggableAttributes;
+  listeners: DraggableSyntheticListeners;
+};
+
+export type CardDragData = {
+  card: OpportunityCard;
+};
+
 export type OpportunityCardProps = {
   card: OpportunityCard;
   today: string | null;
   isOwnerVisible: boolean;
   isOpen: boolean;
   onOpen: (id: number) => void;
+  dragHandle?: CardDragHandle;
+  isDragging?: boolean;
+  isOverlay?: boolean;
+};
+
+export type DraggableOpportunityCardProps = Omit<OpportunityCardProps, "dragHandle" | "isDragging" | "isOverlay"> & {
+  isDragEnabled: boolean;
 };
 
 export type BoardColumnProps = {
@@ -51,6 +69,7 @@ export type BoardColumnProps = {
   onToggleAllClosed: () => void;
   openId: number | null;
   onOpen: (id: number) => void;
+  isDragEnabled: boolean;
 };
 
 export type BoardToolbarProps = {

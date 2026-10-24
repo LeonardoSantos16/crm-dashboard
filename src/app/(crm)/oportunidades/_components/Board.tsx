@@ -1,20 +1,31 @@
 "use client";
 
+import { DndContext, DragOverlay } from "@dnd-kit/core";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo, type ReactNode } from "react";
 import { ErrorState } from "@/components/feedback/ErrorState";
 import { useOpportunities } from "@/hooks/opportunities/useOpportunities";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { useToday } from "@/hooks/useToday";
 import { useBoardFilters } from "../_hooks/useBoardFilters";
+import { useCardDrag } from "../_hooks/useCardDrag";
 import { useOpenOpportunity } from "../_hooks/useOpenOpportunity";
 import { groupByStage } from "../_utils/board";
+import {
+  BOARD_DND_ID,
+  DRAG_ANNOUNCEMENTS,
+  DRAG_ENABLED_QUERY,
+  IGNORE_OPEN,
+  SCREEN_READER_INSTRUCTIONS,
+} from "../_utils/drag";
 import { toListQuery } from "../_utils/filters";
 import { detailPath } from "../_utils/panel";
 import { BoardColumn } from "./BoardColumn";
 import { BoardEmpty } from "./BoardEmpty";
 import { BoardSkeleton } from "./BoardSkeleton";
 import { BoardToolbar } from "./BoardToolbar";
+import { OpportunityCard } from "./OpportunityCard";
 import { OpportunityPanel } from "./OpportunityPanel";
 
 export const Board = () => {
@@ -22,6 +33,8 @@ export const Board = () => {
   const { filters, setFilters } = useBoardFilters();
   const { openId, setOpenId } = useOpenOpportunity();
   const router = useRouter();
+  const isDragEnabled = useMediaQuery(DRAG_ENABLED_QUERY);
+  const { sensors, activeCard, handleDragStart, handleDragEnd, handleDragCancel } = useCardDrag();
   const today = useToday();
   const isManager = user?.role === "MANAGER";
 
@@ -71,21 +84,47 @@ export const Board = () => {
   const renderEmpty = () =>
     renderMessage(<BoardEmpty filters={filters} isManager={isManager} onChange={setFilters} />);
 
-  const renderColumns = () => (
-    <div className="grid min-w-300 grid-cols-5 gap-3">
-      {columns.map((column) => (
-        <BoardColumn
-          key={column.stage}
-          column={column}
+  const renderDragOverlay = () => (
+    <DragOverlay>
+      {activeCard && (
+        <OpportunityCard
+          card={activeCard}
           today={today}
           isOwnerVisible={isManager}
-          isAllClosed={filters.allClosed}
-          onToggleAllClosed={handleToggleAllClosed}
-          openId={openId}
-          onOpen={handleOpen}
+          isOpen={false}
+          onOpen={IGNORE_OPEN}
+          isOverlay
         />
-      ))}
-    </div>
+      )}
+    </DragOverlay>
+  );
+
+  const renderColumns = () => (
+    <DndContext
+      id={BOARD_DND_ID}
+      sensors={sensors}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+      onDragCancel={handleDragCancel}
+      accessibility={{ announcements: DRAG_ANNOUNCEMENTS, screenReaderInstructions: SCREEN_READER_INSTRUCTIONS }}
+    >
+      <div className="grid min-w-300 grid-cols-5 gap-3">
+        {columns.map((column) => (
+          <BoardColumn
+            key={column.stage}
+            column={column}
+            today={today}
+            isOwnerVisible={isManager}
+            isAllClosed={filters.allClosed}
+            onToggleAllClosed={handleToggleAllClosed}
+            openId={openId}
+            onOpen={handleOpen}
+            isDragEnabled={isDragEnabled}
+          />
+        ))}
+      </div>
+      {renderDragOverlay()}
+    </DndContext>
   );
 
   const renderContent = () => {
