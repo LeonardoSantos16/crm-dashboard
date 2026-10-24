@@ -81,3 +81,8 @@ export function applyValidationErrors<T extends FieldValues>(error: unknown, set
   }
   return apiError.details.length > 0;
 }
+
+export function applyFormError<T extends FieldValues>(error: unknown, setError: UseFormSetError<T>) {
+  applyValidationErrors(error, setError);
+  setError("root", { message: getErrorMessage(error) });
+}
