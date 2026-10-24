@@ -8,7 +8,7 @@ export function setApiUserId(id: number | null) {
   currentUserId = id;
 }
 
-export const api = axios.create({ baseURL: "/api" });
+export const api = axios.create({ baseURL: "/api", paramsSerializer: { indexes: null } });
 
 function readToday(response: AxiosResponse | undefined) {
   const value = response?.headers[TODAY_HEADER.toLowerCase()];
