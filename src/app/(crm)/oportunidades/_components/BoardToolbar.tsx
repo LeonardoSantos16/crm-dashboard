@@ -105,7 +105,7 @@ export const BoardToolbar = ({ filters, onChange, team, needsAttention }: BoardT
   );
 
   return (
-    <div className="flex flex-col gap-3 border-b border-border bg-surface px-6 py-3">
+    <div className="flex flex-col gap-3 border-b border-border bg-surface px-4 py-3 md:px-6">
       <div className="flex flex-wrap items-center gap-3">
         <SearchInput value={filters.q} onSearch={handleSearch} />
         {renderNeedsAttention()}

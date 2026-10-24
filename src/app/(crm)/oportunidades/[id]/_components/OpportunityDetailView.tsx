@@ -39,7 +39,7 @@ export const OpportunityDetailView = () => {
   );
 
   const renderMessage = (title: string, message: string) => (
-    <div className="flex flex-col gap-3 px-6 py-5">
+    <div className="flex flex-col gap-3 px-4 py-5 md:px-6">
       {renderBackLink()}
       <h1 className="display-title">{title}</h1>
       <p className="text-sm text-ink-soft">{message}</p>
@@ -47,7 +47,7 @@ export const OpportunityDetailView = () => {
   );
 
   const renderError = () => (
-    <div className="flex max-w-160 flex-col gap-3 px-6 py-5">
+    <div className="flex max-w-160 flex-col gap-3 px-4 py-5 md:px-6">
       {renderBackLink()}
       <h1 className="sr-only">Erro ao carregar a oportunidade</h1>
       <ErrorState message="Não foi possível carregar a oportunidade." onRetry={() => opportunity.refetch()} />
@@ -70,7 +70,7 @@ export const OpportunityDetailView = () => {
 
   const renderContent = (data: OpportunityDetail) => (
     <>
-      <header className="flex flex-col gap-3 border-b border-border px-6 pt-4 pb-5">
+      <header className="flex flex-col gap-3 border-b border-border px-4 pt-4 pb-5 md:px-6">
         {renderBackLink()}
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="flex flex-col gap-2">
@@ -85,7 +85,7 @@ export const OpportunityDetailView = () => {
           <MissingDataNotice opportunity={data} />
         </div>
       </header>
-      <div className="grid items-start gap-4 px-6 py-5 lg:grid-cols-2">
+      <div className="grid items-start gap-4 px-4 py-5 md:px-6 lg:grid-cols-2">
         <DataSection opportunity={data} today={today} />
         <ActivitySection opportunity={data} />
       </div>
