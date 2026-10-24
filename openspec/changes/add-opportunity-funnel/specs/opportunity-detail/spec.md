@@ -11,14 +11,14 @@ Activating a card SHALL open a side panel over the board with the opportunity's 
 
 #### Scenario: Open panel
 - **WHEN** the user clicks the OPP-2003 card
-- **THEN** a side panel opens with OPP-2003's summary, and the URL contains `op=OPP-2003`
+- **THEN** a side panel opens with OPP-2003's summary, and the URL contains `op=2003` (OPP-2003's id)
 
 #### Scenario: Every column stays reachable
 - **WHEN** the panel is open on a 1280px-wide screen
 - **THEN** the board narrows to the remaining width and scrolls horizontally, so Forecast and Fechamento can still be reached
 
 #### Scenario: Open from link
-- **WHEN** a user opens a board link that contains `op=OPP-2003`
+- **WHEN** a user opens a board link that contains `op=2003` (OPP-2003's id)
 - **THEN** the board loads with OPP-2003's panel open
 
 ### Requirement: Detail page on second click
@@ -80,7 +80,7 @@ The detail page SHALL show a header with a link back to Oportunidades, the code 
 - **THEN** it shows the tabs "Dados" and "Atividade", with Dados selected
 
 ### Requirement: Activity timeline
-The Atividade area SHALL show, newest first, in one timeline: comments, stage changes, follow-ups, snoozes, and escalations. Each entry SHALL show its author, date and time, and an icon for its type.
+The Atividade area SHALL show, newest first, in one timeline: creation, comments, stage changes, follow-ups, snoozes, escalations, and the loss. Each entry SHALL show its author when there is one (seed entries and escalations have none), its date and time, and an icon for its type.
 
 #### Scenario: Stage change entry
 - **WHEN** OPP-2003 moved from Apresentação de Orçamento to Follow-up

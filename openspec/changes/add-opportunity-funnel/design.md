@@ -3,9 +3,10 @@
 ## Context
 
 - **Stack:** Next.js 16.4.2 (App Router, `cacheComponents: true`), React 19.3, TypeScript, Tailwind CSS 4. Every style comes from the `@theme` tokens and follows `openspec/specs/design-system/spec.md`.
-- **Current screens:** none. `app/page.tsx` is still the create-next-app placeholder.
-- **Existing components:** `components/feedback/` already has `StatusBadge` (with `pickAlertState`), `Skeleton`, `ErrorState`, and `EmptyState`.
-- **No API yet:** the case asks for a Node.js REST API with PostgreSQL. It does not exist yet, and this change does not build it.
+- **Current screens:** none. The root page is still the create-next-app placeholder.
+- **Existing components:** `src/components/feedback/` already has `StatusBadge` (with `pickAlertState`), `Skeleton`, `ErrorState`, and `EmptyState`.
+- **API:** the `crm-api` (Express, Prisma, PostgreSQL) lives in its own repository. Its contract is in `docs/integracao-api/`: endpoints, errors, and the TypeScript types. It computes alerts, stage deadlines, ordering, the 30-day cutoffs, and the allowed moves of each opportunity.
+- **Code conventions:** `docs/padroes.md`.
 - **Business rules:** the alert and follow-up behavior comes from the decision document "Case CRM — Automação & Qualidade: decisões". This change uses decisions 4, 7, 8, 11, 12 to 15, and 16.
 - **Interview:** the screen decisions below come from a design interview held on 2026-10-23. See proposal.md for motivation and scope.
 
@@ -14,7 +15,7 @@
 **Goals:**
 - Wireframes complete enough for Claude Design to prototype every screen, state, and dialog of the funnel without guessing.
 - One interaction model for the board on desktop, mobile, and keyboard.
-- A front end that works before the API exists and switches to it without changes to the screens.
+- A front end that takes every business rule from the API. The front only groups cards by stage and displays what the API returns.
 
 **Non-Goals:**
 - Visual polish. The wireframes fix structure, content, and pt-BR copy. Claude Design decides spacing and visual weight within the design system.
@@ -558,33 +559,40 @@ The "Responsável" field is locked for a salesperson. For a manager it is the se
 |---|---|
 | `/` | Redirects to `/oportunidades` |
 | `/oportunidades` | Board. Search, filters, sort, "Ver todas", and the open panel (`op=`) live in the search params. |
-| `/oportunidades/[code]` | Detail page |
+| `/oportunidades/[id]` | Detail page. The API reads opportunities by numeric `id`, so the route and `op=` use it; the screens show the `code`. |
 | `/retornos`, `/time` | Placeholders until `add-follow-up-alerts` |
 
 **Panel state:** the panel is a search param on the board, not a separate route.
 - **Why:** a search param keeps the board's filters and scroll position, and the link can be shared.
 - **Alternative considered:** intercepting and parallel routes, which would render the panel as a route over the board. Rejected: more moving parts for the same result, and the panel does not need its own loading boundary.
 
-### 2. Data access behind one client
+### 2. Data on the client with TanStack Query and axios
 
 **Approach:**
-- Screens read and write through a typed client in `lib/api/`. It speaks the REST contract the API will expose and sends the demo user in an `X-User-Id` header.
-- Until the API exists, the client uses an in-repo mock with the case data, a fixed "today" of 15/10/2026, and the example deadlines.
-- The mock filters by owner and rejects invalid moves, so the screens are exercised against the same rules.
-
-**Alert computation:** the API computes alerts (decision 5). The mock reproduces only what the screens need to show: idle days, the share of the deadline used, snoozed, and escalated.
+- Pages are server-component shells. The interactive parts are client components that read and write through TanStack Query v5 and one axios instance (`src/lib/axios.ts`, `baseURL: "/api"`).
+- A rewrite in `next.config.ts` sends `/api/:path*` to `${API_URL}/api/:path*`, so the browser talks to its own origin and needs no CORS. `API_URL` is documented in `.env.example`.
+- `src/lib/api/types.ts` is a copy of `docs/integracao-api/crm-api-front-types.ts` and the only place response types are declared.
+- **Today:** a response interceptor keeps the last `X-Today` header, read through `useToday()`. Date logic ("Vencida há N dias", event within 7 days, the 30-day window) lives in pure functions in `src/lib/dates.ts` that take `today` as an argument. The browser's date is never used.
+- **List filters:** the search params use the API's own names (`q`, `situation`, `ownerId`, `sort`, `allClosed`, `includeLost`), so they go straight into the request `params`. The front only groups the returned list by `stage`, or by `lostFromStage` for lost cards.
+- **After an action:** every action returns the updated detail. Its hook writes it with `setQueryData` and invalidates the list, which also refreshes `needsAttention`.
+- **Errors:** `src/lib/api/errors.ts` turns `code` and `details.reason` into pt-BR text, and maps `VALIDATION_ERROR` paths onto form fields.
 
 **Alternatives considered:**
-- MSW. It adds a service worker and a dependency, and server components fetch outside the browser anyway.
-- Next.js route handlers as the real API. Rejected: the API is a separate deliverable of the case, with its own tests.
+- Server components fetching with a cookie. Rejected: the board is highly interactive (optimistic moves, invalidation after each action, filters that change constantly), and mixing server actions with revalidation adds more moving parts than a client cache.
+- Calling the API directly with CORS. Rejected: the custom `X-User-Id` header triggers a preflight, and the rewrite avoids configuring CORS in the API.
 
-### 3. Demo identity in a cookie
+### 3. Demo identity in `localStorage`
 
-**Approach:** the selected user is stored in a cookie. Server components can then fetch as that user on the first render, with no client-side flash.
+**Approach:**
+- The selected user id is stored in `localStorage`, read and written inside try/catch, and exposed by a `CurrentUserProvider` with `useCurrentUser()`.
+- With no stored user, the first `SELLER` from `/api/users` is used.
+- A request interceptor sends it as `X-User-Id`.
+- The user id is part of every `queryKey`, so switching users refetches everything.
+- Until the user is resolved, screens show their skeleton.
 
-**Alternative considered:** `localStorage`. Rejected: the server cannot read it, so the first render would show the wrong data.
+**Alternative considered:** a cookie read by server components. Rejected: data is fetched on the client (decision 2), so the server never needs the identity.
 
-**Production:** the README explains that the cookie and the header are replaced by a token the API validates.
+**Production:** the README explains that the stored id and the header are replaced by a token the API validates.
 
 ### 4. Drag and drop with `@dnd-kit`
 
@@ -603,9 +611,9 @@ The "Responsável" field is locked for a salesperson. For a manager it is the se
 
 ### 5. Optimistic move with rollback
 
-**Approach:** a dropped card moves at once. If the API rejects the move, the card returns to its column and the API's message is shown. This follows the spec requirement "Rejected move".
+**Approach:** a dropped card, or a stage picked in "Mover para…", moves at once. The move hook's `onMutate` moves the card in the list cache, and `onError` restores it and shows the API's reason in pt-BR in a `Toast` (`src/components/feedback/`). This follows the spec requirement "Rejected move". The move is the only optimistic action.
 
-**Forbidden columns:** the dimming during the drag comes from the rules the API publishes for the opportunity, so the interface never hard-codes them.
+**Forbidden columns:** the dimming during the drag and the disabled stages in the menu come from the opportunity's `moves`. A move with `allowed: true` and `missing` opens the "Completar dados" dialog, which calls `/move` with `complete`. The interface never hard-codes the rules.
 
 ### 6. Board details settled during the interview
 
@@ -641,15 +649,44 @@ Ask for a prototype of W1 to W13 that uses only those tokens.
 - Layout or flow changes go into this change, through `/opsx:update`.
 - Both happen before `/opsx:apply`.
 
+### 9. Dialogs and menus with Radix
+
+**Approach:** `@radix-ui/react-dialog` for the modals and the side panel, and `@radix-ui/react-dropdown-menu` for "Mover para…". They are unstyled and are styled with the `@theme` tokens.
+
+**Why:** focus trapping, Escape, and ARIA come built in. An accessible menu with disabled items is easy to get wrong by hand.
+
+**Alternative considered:** the native `<dialog>` with a hand-made menu.
+
+### 10. Forms with React Hook Form and Zod
+
+- Each form declares a Zod schema at the top of its file, with pt-BR messages, that repeats the API rules: required fields, lengths, email, positive numbers, and the date window counted from `X-Today`.
+- Errors only the server can detect come back through the `VALIDATION_ERROR` mapping (decision 2).
+- Money fields use a `MoneyInput` (`src/components/form/`) that shows "R$ 1.234,56" and hands a `number` to the form, with no mask library.
+
+### 11. Code layout
+
+The code lives under `src/` (`src/app`, `src/components`, `src/hooks`, `src/lib`), with the `@/*` alias pointing to `./src/*`. Components used by one route go in that route's `_components/` folder. `docs/padroes.md` holds the full conventions.
+
+The design-system tests scan `src/` and read `src/app/globals.css`.
+
+### 12. No new tests in this change
+
+This change adds no new tests. Each task is checked in the browser, using the spec scenarios as the script, plus `npm run lint`, `typecheck`, `test`, and `build`. The existing design-system tests keep running in CI. A later change, `add-funnel-test-coverage`, adds component and flow tests from the spec scenarios and decides on fixtures and API mocking.
+
+### 13. Delivery in slices
+
+The tasks are grouped into slices: foundation, shell, board, panel and detail, dialogs and actions, drag and drop, and mobile. Each slice is one branch off `develop` and one PR into `develop`.
+
 ## Risks / Trade-offs
 
 - **[The board is too wide below 1280px]** → The board scrolls horizontally inside its own area. The top bar and toolbar stay fixed.
 - **[The second click is hard to discover]** → "Abrir detalhes" is always in the panel. The second click is only a shortcut.
-- **[The mock drifts from the real API]** → The client's types are the contract. When the API arrives, it is tested against the same scenarios.
+- **[The types duplicated in both repositories drift apart]** → `src/lib/api/types.ts` is the only copy in the front. Compare it with `docs/integracao-api/crm-api-front-types.ts` when the API changes. The README lists the duplication as a limitation.
+- **[No tests in this change, so regressions only show up in the browser]** → Each task is checked against its spec scenarios, and `add-funnel-test-coverage` follows this change.
 - **[A salesperson marks a follow-up that did not happen]** → Accepted limitation, from the decision document. The date stays in the timeline.
 
 ## Open Questions
 
-- **Stage returns (Q14):** which backward moves are allowed. Only the dimmed columns change, and the API publishes the rule.
-- **Real deadline per stage.** The mock and the wireframes use example values.
 - **Lead intake:** whether leads will also come in from the website.
+
+Resolved by the API: stage returns (Q14) come from each opportunity's `moves`, and the real stage deadline comes from `alert.deadlineDays`. The values in the wireframes remain examples.
