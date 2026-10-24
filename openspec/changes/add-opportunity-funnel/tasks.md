@@ -35,7 +35,7 @@ Each group from 2 to 8 is one slice: one branch off `develop` and one PR into `d
   - the "Entrando como" selector labeled as demo mode.
 
   Verify in the browser as Ana and as Marcos.
-- [ ] 3.2 Add the routes: `/` redirects to `/oportunidades`, and `/retornos` and `/time` are placeholders. Replace the create-next-app placeholder. Verify in the browser and with `npm run build`.
+- [x] 3.2 Add the routes: `/` redirects to `/oportunidades`, and `/retornos` and `/time` are placeholders. Replace the create-next-app placeholder. Verify in the browser and with `npm run build`.
 
 ## 4. Board (`feat/funnel-board`)
 

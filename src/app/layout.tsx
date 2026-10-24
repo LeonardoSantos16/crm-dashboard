@@ -15,7 +15,7 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "CRM Nobre Brindes",
+  title: { default: "Nobre CRM", template: "%s · Nobre CRM" },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
