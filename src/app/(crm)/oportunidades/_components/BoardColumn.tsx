@@ -1,8 +1,12 @@
+"use client";
+
+import { useDroppable } from "@dnd-kit/core";
 import { ArrowRight, ClockAlert } from "lucide-react";
 import { STAGE_LABELS } from "@/utils/labels";
 import type { BoardColumnProps } from "../_types/board";
 import { isColumnEmpty } from "../_utils/board";
-import { OpportunityCard } from "./OpportunityCard";
+import { getDraggedCard } from "../_utils/drag";
+import { DraggableOpportunityCard } from "./DraggableOpportunityCard";
 
 export const BoardColumn = ({
   column,
@@ -12,9 +16,12 @@ export const BoardColumn = ({
   onToggleAllClosed,
   openId,
   onOpen,
+  isDragEnabled,
 }: BoardColumnProps) => {
   const isClosing = column.stage === "CLOSING";
   const headingId = `column-${column.stage}`;
+  const { setNodeRef, isOver, active } = useDroppable({ id: column.stage });
+  const isDropTarget = isOver && getDraggedCard(active)?.stage !== column.stage;
 
   const renderClosingPeriod = () =>
     isClosing && <p className="text-xs text-ink-soft">{isAllClosed ? "todas" : "últimos 30 dias"}</p>;
@@ -44,10 +51,11 @@ export const BoardColumn = ({
       <ul className="flex flex-col gap-2">
         {[...column.cards, ...column.lostCards].map((card) => (
           <li key={card.id}>
-            <OpportunityCard
+            <DraggableOpportunityCard
               card={card}
               today={today}
               isOwnerVisible={isOwnerVisible}
+              isDragEnabled={isDragEnabled}
               isOpen={card.id === openId}
               onOpen={onOpen}
             />
@@ -70,7 +78,13 @@ export const BoardColumn = ({
     );
 
   return (
-    <section aria-labelledby={headingId} className="flex min-w-0 flex-col gap-2">
+    <section
+      ref={setNodeRef}
+      aria-labelledby={headingId}
+      className={`flex min-w-0 flex-col gap-2 rounded-md transition-colors ${
+        isDropTarget ? "bg-success-bg outline-2 outline-offset-4 outline-forest outline-dashed" : ""
+      }`}
+    >
       <header className="flex min-h-16 flex-col justify-end gap-1 border-b-2 border-border pb-2">
         <h2 id={headingId} className="font-mono text-xs font-bold tracking-wide uppercase">
           {STAGE_LABELS[column.stage]}

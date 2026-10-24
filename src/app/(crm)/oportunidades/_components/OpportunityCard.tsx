@@ -3,7 +3,16 @@ import { formatCurrency, formatQuantity } from "@/utils/format";
 import type { OpportunityCardProps } from "../_types/board";
 import { CARD_BAND_STYLES, getCardBand } from "../_utils/card";
 
-export const OpportunityCard = ({ card, today, isOwnerVisible, isOpen, onOpen }: OpportunityCardProps) => {
+export const OpportunityCard = ({
+  card,
+  today,
+  isOwnerVisible,
+  isOpen,
+  onOpen,
+  dragHandle,
+  isDragging = false,
+  isOverlay = false,
+}: OpportunityCardProps) => {
   const isLost = card.stage === "LOST";
   const [item, ...otherItems] = card.items;
   const band = useMemo(() => getCardBand(card, today), [card, today]);
@@ -45,12 +54,21 @@ export const OpportunityCard = ({ card, today, isOwnerVisible, isOpen, onOpen }:
     ? "border-lost-bg bg-lost-bg text-lost-fg"
     : "border-border bg-surface text-ink shadow-card hover:shadow-lift";
 
+  const dragClassName = isOverlay
+    ? "cursor-grabbing shadow-lift"
+    : `${dragHandle ? "cursor-grab" : ""} ${isDragging ? "opacity-40" : ""}`;
+
   return (
     <button
       type="button"
+      ref={dragHandle?.ref}
+      {...dragHandle?.attributes}
+      {...dragHandle?.listeners}
       onClick={() => onOpen(card.id)}
       aria-current={isOpen ? "true" : undefined}
-      className={`flex w-full flex-col overflow-hidden rounded-md border text-left transition-shadow ${stateClassName} ${
+      aria-hidden={isOverlay ? "true" : undefined}
+      tabIndex={isOverlay ? -1 : 0}
+      className={`flex w-full flex-col overflow-hidden rounded-md border text-left transition-shadow ${stateClassName} ${dragClassName} ${
         isOpen ? "border-forest ring-2 ring-forest" : ""
       }`}
     >

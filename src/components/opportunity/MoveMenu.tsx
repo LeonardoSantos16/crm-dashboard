@@ -13,7 +13,7 @@ import { findMove } from "@/utils/opportunity";
 const ITEM_CLASS = "flex min-h-9 w-full items-center gap-2 px-3 py-1.5 text-left text-sm -outline-offset-2";
 
 export const MoveMenu = ({ opportunity, onRequestComplete }: MoveMenuProps) => {
-  const move = useMoveOpportunity(opportunity.id);
+  const move = useMoveOpportunity();
 
   const handleSelect = (stage: FunnelStage) => {
     const target = findMove(opportunity, stage);
@@ -22,7 +22,7 @@ export const MoveMenu = ({ opportunity, onRequestComplete }: MoveMenuProps) => {
       onRequestComplete({ toStage: stage, missing: target.missing });
       return;
     }
-    move.mutate({ toStage: stage });
+    move.mutate({ id: opportunity.id, toStage: stage });
   };
 
   const renderCurrent = (stage: FunnelStage) => (
