@@ -14,22 +14,29 @@ src/
 │   ├── layout.tsx
 │   ├── providers.tsx        # QueryClientProvider + CurrentUserProvider (client)
 │   ├── globals.css          # @theme com os tokens
-│   └── oportunidades/
+│   └── (crm)/oportunidades/
 │       ├── page.tsx
 │       ├── _components/     # componentes usados só por esta rota
+│       ├── _hooks/          # hooks usados só por esta rota
+│       ├── _types/          # tipos usados só por esta rota (inclusive props)
+│       ├── _utils/          # funções auxiliares e constantes só desta rota
 │       └── [id]/page.tsx
 ├── components/              # componentes usados por duas ou mais rotas
 │   ├── feedback/            # StatusBadge, Skeleton, ErrorState, EmptyState, Toast
 │   └── form/                # MoneyInput e outros campos
-├── hooks/                   # hooks customizados (useXxx.ts)
+├── hooks/                   # hooks usados por duas ou mais rotas (useXxx.ts)
 │   └── opportunities/       # um hook por consulta ou ação da API
-└── lib/                     # clientes e helpers de infraestrutura
-    ├── axios.ts             # instância `api`
-    ├── react-query.ts       # instância `queryClient`
+├── lib/                     # clientes de infraestrutura, sem regra de negócio
+│   ├── axios.ts             # instância `api`
+│   ├── react-query.ts       # instância `queryClient`
+│   └── today.ts             # store do X-Today
+├── types/                   # tipos compartilhados
+│   └── api.ts               # contrato da crm-api (cópia de docs/integracao-api)
+└── utils/                   # funções auxiliares e constantes compartilhadas
+    ├── apiErrors.ts         # códigos da API → texto em pt-BR
     ├── dates.ts             # contas de data relativas ao X-Today
-    └── api/
-        ├── types.ts         # contrato da crm-api (cópia de docs/integracao-api)
-        └── errors.ts        # códigos da API → texto em pt-BR
+    ├── format.ts            # moeda, quantidade e plural
+    └── labels.ts            # rótulos em pt-BR (etapas, papéis, situações)
 tests/                       # testes de design system
 docs/                        # case, contrato da API e estes padrões
 openspec/                    # specs e changes
@@ -40,10 +47,18 @@ public/                      # estáticos
 - Não existe `src/pages/`. Uma pasta com esse nome ao lado de `src/app` ativa o Pages Router.
 - `public/`, `.env*` e os arquivos de configuração ficam na raiz.
 
-**Onde colocar um componente:**
+**Onde colocar cada coisa:**
 
-- usado por **uma** rota → `src/app/<rota>/_components/`. O `_` torna a pasta privada: o Next não a trata como rota;
-- usado por **duas ou mais** → `src/components/`.
+| O quê | Usado por uma rota | Usado por duas ou mais |
+|---|---|---|
+| Componente | `src/app/<rota>/_components/` | `src/components/` |
+| Hook | `src/app/<rota>/_hooks/` | `src/hooks/` |
+| Tipo (inclusive props) | `src/app/<rota>/_types/` | `src/types/` |
+| Função auxiliar ou constante | `src/app/<rota>/_utils/` | `src/utils/` |
+
+- O `_` torna a pasta privada: o Next não a trata como rota.
+- Tipos e funções não ficam no mesmo arquivo: tipos em `types`, funções em `utils`.
+- `lib/` guarda só clientes de infraestrutura (axios, queryClient, stores). Funções auxiliares vão para `utils/`.
 
 ---
 
@@ -51,14 +66,41 @@ public/                      # estáticos
 
 ### Um arquivo por componente
 
-O componente fica em `NomeComponente.tsx`, com export nomeado. Os estilos são classes do Tailwind no próprio JSX, sem `styles.ts`.
+O componente fica em `NomeComponente.tsx`, declarado como `export const` com arrow function. Hooks seguem o mesmo formato. As páginas do Next declaram a `const` e fazem `export default` no fim. Os estilos são classes do Tailwind no próprio JSX, sem `styles.ts`. As props ficam em `_types/` (ou `src/types/`), não no arquivo do componente.
 
 ```tsx
-// src/components/feedback/StatusBadge.tsx
-export function StatusBadge({ state, label }: StatusBadgeProps) { /* ... */ }
+// src/app/(crm)/oportunidades/_components/OpportunityCard.tsx
+export const OpportunityCard = ({ card, today, isOwnerVisible }: OpportunityCardProps) => { /* ... */ };
+
+// src/app/(crm)/oportunidades/page.tsx
+const OpportunitiesPage = () => <Board />;
+export default OpportunitiesPage;
 ```
 
-Se um componente crescer e ganhar partes privadas, vira uma pasta com `index.tsx` e os arquivos auxiliares ao lado.
+### O `return` mostra só a estrutura principal
+
+Partes secundárias e condicionais (estado vazio, skeleton, contadores, botões que só aparecem em uma etapa) viram funções `const render…` dentro do componente. O `return` fica com a estrutura principal, chamando essas funções. Condições que são regra (como "a coluna está vazia") vão para uma função em `_utils/`.
+
+```tsx
+const renderCards = () => {
+  if (isColumnEmpty(column)) return <p>Nenhuma oportunidade nesta etapa</p>;
+  return <ul>{/* ... */}</ul>;
+};
+
+return (
+  <section>
+    <header>{/* ... */}</header>
+    {renderCards()}
+    {renderClosingToggle()}
+  </section>
+);
+```
+
+### `useMemo` e `useCallback`
+
+- `useMemo` para contas que percorrem listas ou montam objetos usados como dependência ou chave de consulta (agrupar cards, filtrar o time, montar a query).
+- `useCallback` para funções passadas como prop a componentes filhos ou usadas como dependência de efeito (`setFilters`, handlers de busca).
+- Contas triviais (uma comparação, uma concatenação) ficam sem memo.
 
 ### Server e client components
 
@@ -84,7 +126,7 @@ Quando dois componentes usam a mesma lógica, ela vai para `src/hooks/`. Exemplo
 
 ### Lógica sem React → função pura em `lib/`
 
-Contas que não dependem de React (agrupar cards por etapa, calcular "Vencida há N dias", traduzir um erro) ficam em `src/lib/` como funções puras. Elas recebem tudo por argumento, inclusive o "hoje".
+Contas que não dependem de React (agrupar cards por etapa, calcular "Vencida há N dias", traduzir um erro) ficam em `src/utils/` (ou no `_utils/` da rota) como funções puras. Elas recebem tudo por argumento, inclusive o "hoje".
 
 ---
 
@@ -136,7 +178,7 @@ export const api = axios.create({ baseURL: "/api" });
 
 ### Tipos
 
-`src/lib/api/types.ts` é a fonte da verdade do contrato. É uma cópia de `docs/integracao-api/crm-api-front-types.ts`; quando a API mudar, compare os dois arquivos. Não declare tipos de resposta da API em outro lugar.
+`src/types/api.ts` é a fonte da verdade do contrato. É uma cópia de `docs/integracao-api/crm-api-front-types.ts`; quando a API mudar, compare os dois arquivos. Não declare tipos de resposta da API em outro lugar.
 
 ### Busca com TanStack Query v5
 
@@ -187,7 +229,7 @@ Busca, filtros, ordenação e o painel aberto (`op`) ficam nos search params:
 
 ### Erros
 
-A `message` da API é em inglês e serve só para log. O texto exibido sai de `src/lib/api/errors.ts`:
+A `message` da API é em inglês e serve só para log. O texto exibido sai de `src/utils/apiErrors.ts`:
 
 - `getErrorMessage(error)`: texto em pt-BR a partir do `code` e do `details.reason`;
 - `applyValidationErrors(error, setError)`: leva cada `details[].path` de um `VALIDATION_ERROR` para o campo do formulário.
