@@ -12,7 +12,7 @@ export function IdentityMenu() {
   if (isPending) {
     return (
       <LoadingRegion label="Carregando usuários">
-        <div className="h-9 w-56 rounded-md bg-forest" />
+        <div className="h-9 w-36 rounded-md bg-forest md:w-56" />
       </LoadingRegion>
     );
   }
@@ -36,7 +36,7 @@ export function IdentityMenu() {
     <div className="flex flex-col items-end">
       <DropdownMenu.Root>
         <DropdownMenu.Trigger className="inline-flex h-8 items-center gap-1.5 rounded-md px-2 text-sm text-moss transition-colors hover:bg-forest">
-          Entrando como:
+          <span className="sr-only md:not-sr-only">Entrando como:</span>
           <span className="font-semibold text-white">
             {user.name} ({ROLE_LABELS[user.role]})
           </span>

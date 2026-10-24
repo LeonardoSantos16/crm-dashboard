@@ -131,7 +131,7 @@ export const OpportunityPanel = ({ id, today, onClose }: OpportunityPanelProps) 
       tabIndex={-1}
       aria-labelledby={TITLE_ID}
       onKeyDown={handleKeyDown}
-      className="sticky top-0 flex h-[calc(100dvh-3.5rem)] w-105 shrink-0 flex-col overflow-y-auto border-l border-border bg-surface shadow-overlay outline-none"
+      className="fixed inset-0 z-20 flex flex-col overflow-y-auto overscroll-contain bg-surface outline-none md:sticky md:inset-auto md:top-0 md:h-[calc(100dvh-3.5rem)] md:w-105 md:shrink-0 md:border-l md:border-border md:shadow-overlay"
     >
       <div className="flex items-center justify-between gap-2 px-5 pt-3">
         <span className="font-mono text-xs font-medium tracking-wide text-ink-soft">{opportunity.data?.code}</span>
