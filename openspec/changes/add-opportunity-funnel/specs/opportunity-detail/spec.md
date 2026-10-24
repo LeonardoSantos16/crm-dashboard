@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Defines how a user views, edits, moves, closes as lost, and creates a single opportunity: a quick side panel, a full detail page with an activity timeline and comments, and the dialogs those flows need.
+Defines how a user views, moves, and closes as lost a single opportunity: a quick side panel, a full detail page with an activity timeline and comments, and the dialogs those flows need.
 
 ## ADDED Requirements
 
@@ -73,11 +73,11 @@ The panel and the detail page SHALL offer "Mover para…", a menu of stages. Sta
 - **THEN** Fechamento is disabled with "Só a partir de Forecast"
 
 ### Requirement: Detail page layout
-The detail page SHALL show a header with a link back to Oportunidades, the code and company, the alert badge, and the actions. Below it, two areas: Dados (data, dates, and gift items) and Atividade. On viewports narrower than 768px the two areas SHALL be tabs.
+The detail page SHALL show a header with a link back to Oportunidades, the code and company, the alert badge, and the actions. Below it, two areas: Dados (data, dates, and gift items) and Atividade. Below 1024px the two areas SHALL stack.
 
-#### Scenario: Mobile tabs
+#### Scenario: Stacked areas
 - **WHEN** the detail page opens on a 375px-wide screen
-- **THEN** it shows the tabs "Dados" and "Atividade", with Dados selected
+- **THEN** Dados is shown above Atividade, and the page has no horizontal scroll
 
 ### Requirement: Activity timeline
 The Atividade area SHALL show, newest first, in one timeline: creation, comments, stage changes, follow-ups, snoozes, escalations, and the loss. Each entry SHALL show its author when there is one (seed entries and escalations have none), its date and time, and an icon for its type.
@@ -97,19 +97,19 @@ The Atividade area SHALL have a comment box at the top. A comment SHALL be added
 - **WHEN** the user tries to send an empty comment
 - **THEN** nothing is sent and the send button stays disabled
 
-### Requirement: Edit modal
-The detail page SHALL offer "Editar", which opens a modal with the opportunity's fields and its gift items. The modal SHALL fill the screen on viewports narrower than 768px. Saving SHALL validate every field and show errors next to the fields.
+### Requirement: Missing data dialog
+When "Mover para…" targets Apresentação de Orçamento and the opportunity lacks an estimated value or a gift item, the menu SHALL open a dialog that asks only for the missing data, saves it, and moves the opportunity.
 
-#### Scenario: Save edit
-- **WHEN** the user changes the contact phone and saves
-- **THEN** the modal closes and the page shows the new phone
+#### Scenario: Move without gift item
+- **WHEN** the user picks Apresentação de Orçamento for OPP-2001, which has no gift item
+- **THEN** a dialog asks for the gift item, and confirming it saves the item and moves the opportunity
 
-#### Scenario: Editing does not reset the alert clock
-- **WHEN** the user edits any field of an idle opportunity
-- **THEN** its alert stays as it was
+#### Scenario: Cancel
+- **WHEN** the user cancels that dialog
+- **THEN** the opportunity stays in its stage and nothing is saved
 
 ### Requirement: Gift items
-The edit modal SHALL let the user add and remove gift items, each with gift, quantity, and unit value. The items' total SHALL be suggested as the estimated value, and the user SHALL be able to override it.
+When the gift item is missing, the missing data dialog SHALL ask for one item: gift, quantity, and unit value. The item's total SHALL be suggested as the estimated value, and the user SHALL be able to override it.
 
 #### Scenario: Suggested value
 - **WHEN** the user adds 300 "Caneca personalizada" at R$ 15,00
@@ -125,18 +125,3 @@ Marking an opportunity as lost SHALL require a reason from this list: Preço, Pr
 #### Scenario: Other needs detail
 - **WHEN** the user picks "Outro" and leaves the detail empty
 - **THEN** the dialog says "Descreva o motivo"
-
-### Requirement: Create opportunity
-"Nova oportunidade" SHALL open a dialog with company, contact, and owner as required fields, and gift, quantity, and estimated value as optional fields. A new opportunity SHALL start in Primeiro Contato.
-
-#### Scenario: Salesperson creates
-- **WHEN** Ana opens "Nova oportunidade"
-- **THEN** the owner field shows Ana and cannot be changed
-
-#### Scenario: Manager creates
-- **WHEN** Marcos (manager) opens "Nova oportunidade"
-- **THEN** the owner field is a selector with his team
-
-#### Scenario: Created
-- **WHEN** the user saves a valid new opportunity
-- **THEN** it appears in the Primeiro Contato column and its panel opens

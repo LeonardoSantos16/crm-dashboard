@@ -82,31 +82,30 @@ Each group from 2 to 8 is one slice: one branch off `develop` and one PR into `d
 - [x] 6.5 Build "Marcar como retornado" (W12): channel buttons, summary, a next date after today and up to 30 days, and the default-deadline hint from `alert.deadlineDays`. Verify the hint and the 30-day limit in the browser.
 - [x] 6.6 Build "Adiar" (W13): a required date up to 30 days, an optional reason, and the escalation warning when `snoozeCount` is 1. Verify in the browser by snoozing twice in a row.
 - [x] 6.7 Hide "Marcar como retornado" and "Adiar" for opportunities in Fechamento and Perdida. Verify with OPP-2006 in the browser.
-- [ ] 6.8 Build the "Nova oportunidade" dialog (W11): the owner is locked for a salesperson and a select of the team for a manager. The new opportunity starts in Primeiro Contato and its panel opens. Verify as Ana and as Marcos.
-- [ ] 6.9 Build the edit modal (W8):
-  - field validation, with server errors shown on their fields;
-  - add and remove gift items;
-  - the suggested value that the user can override.
 
-  Verify in the browser, including the 422 for an empty item list from Orçamento on.
+Deferred to a later change: the "Nova oportunidade" dialog (W11) and the edit modal (W8).
 
 ## 7. Drag and drop (`feat/funnel-dnd`)
 
 - [ ] 7.1 Check the current `@dnd-kit` version against React 19, install it, and drag cards on viewports 768px and wider, reusing the optimistic move from 6.2. Verify with a manual drag in the browser.
-- [ ] 7.2 While dragging, dim forbidden columns with the icon and reason, and show the "Marcar como perdida" drop area, which opens the lost dialog. Verify against W2 in the browser, with the mouse and with the keyboard sensor.
-- [ ] 7.3 Open the missing-data dialog (W9) when a card with `missing` is dropped on Apresentação de Orçamento, and restore the card on cancel. Verify both paths in the browser.
+
+Deferred: dimming forbidden columns and the "Marcar como perdida" drop area during the drag (W2), and opening the missing-data dialog on drop. A blocked drop restores the card and shows the reason in a toast.
 
 ## 8. Mobile (`feat/funnel-mobile-minimal`)
 
 Minimal scope: the screens stay usable at 375px without horizontal page scroll. The dedicated mobile layout (bottom bar, stage tabs, filters bottom sheet, detail tabs, fixed action bar) is out of scope and goes to the README as a next step.
 
-- [x] 8.1 Wrap the top bar below 768px: logo and actions on the first row, nav tabs on a second row; icon-only "Nova oportunidade", hidden bell and visually hidden "Entrando como:" below 640px. Verify at 375px.
+- [x] 8.1 Wrap the top bar below 768px: logo and identity selector on the first row, nav tab on a second row; "Entrando como:" visually hidden. Verify at 375px.
 - [x] 8.2 Make the opportunity panel full screen below 768px, keeping the close button, Escape, and menus and dialogs above it. Verify at 375px.
 - [x] 8.3 Use 16px side gutters below 768px on the board, toolbar, and detail page, and keep toasts inside the viewport. Verify at 375px.
 
-## 9. Integration check
+## 9. Cleanup (`chore/cleanup`)
 
-- [ ] 9.1 Walk the main flow as Ana and then as Marcos, at 1280px and 375px:
+- [x] 9.1 Remove what the delivered scope does not use: the Retornos and Time tabs and their placeholder routes, the bell, the disabled "Nova oportunidade" and "Editar" buttons, and the unused `useAddComment` hook. Verify with `npm run lint`, `npm run typecheck`, and `npm test`.
+
+## 10. Integration check
+
+- [ ] 10.1 Walk the main flow as Ana and then as Marcos, at 1280px and 375px:
   - find OPP-2004 through "Precisam de atenção";
   - open the panel, then the page;
   - comment, mark as followed up, snooze, move, mark as lost.
