@@ -1,6 +1,6 @@
 import type { LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
-import type { FunnelStage, MissingField, OpportunitySummary } from "@/types/api";
+import type { FollowUpChannel, FunnelStage, LossReason, MissingField, OpportunitySummary } from "@/types/api";
 
 export type ActionPath = "follow-up" | "snooze" | "lose" | "comments";
 
@@ -69,4 +69,17 @@ export type OpportunityDialog = "followUp" | "snooze" | "lost";
 export type DialogHeadingProps = {
   opportunity: OpportunitySummary;
   showStage?: boolean;
+};
+
+export type ChannelPickerProps = {
+  value: FollowUpChannel | null;
+  onChange: (value: FollowUpChannel | null) => void;
+};
+
+export type LossReasonFieldValues = {
+  reason: LossReason | undefined;
+};
+
+export type OpportunityNoticeProps = {
+  opportunity: OpportunitySummary;
 };

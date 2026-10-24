@@ -32,7 +32,8 @@ export const OpportunityPanel = ({ id, today, onClose }: OpportunityPanelProps) 
   }, [id]);
 
   const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
-    if (event.key === "Escape") onClose();
+    if (event.key !== "Escape" || !event.currentTarget.contains(event.target as Node)) return;
+    onClose();
   };
 
   const renderCloseButton = () => (

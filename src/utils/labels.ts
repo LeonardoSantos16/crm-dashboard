@@ -45,3 +45,7 @@ export const ESCALATION_CAUSE_LABELS: Record<"DEADLINE" | "SNOOZES", string> = {
 };
 
 export const EMPTY_VALUE = "Não informado";
+
+export const FOLLOW_UP_CHANNELS: FollowUpChannel[] = ["CALL", "WHATSAPP", "EMAIL", "MEETING"];
+
+export const LOSS_REASONS: LossReason[] = ["PRICE", "DELIVERY_TIME", "COMPETITOR", "NO_BUDGET", "NO_RESPONSE", "OTHER"];
