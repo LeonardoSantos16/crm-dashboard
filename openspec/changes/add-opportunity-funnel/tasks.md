@@ -62,7 +62,7 @@ Each group from 2 to 8 is one slice: one branch off `develop` and one PR into `d
 
 ## 5. Side panel and detail page (`feat/funnel-detail`)
 
-- [ ] 5.1 Build the side panel (W5):
+- [x] 5.1 Build the side panel (W5):
   - `op=<id>` in the URL;
   - summary, alert reason, and "Não informado" for empty fields;
   - "Vencida há N dias" for an expired proposal, counted from `X-Today`;
@@ -70,8 +70,8 @@ Each group from 2 to 8 is one slice: one branch off `develop` and one PR into `d
   - the actions, with "Marcar como retornado" as the full-width main action.
 
   While the panel is open, the board narrows and scrolls horizontally. Clicking the open card again navigates to the page. Verify in the browser with OPP-2002 (expired proposal), the second click, and keyboard Enter.
-- [ ] 5.2 Build the detail page `/oportunidades/[id]` (W6): header with actions, Dados with gift items, and the Atividade timeline, newest first, with an icon for each of the seven entry types. Verify with OPP-2004 in the browser.
-- [ ] 5.3 Add comments: a send button that stays disabled while the box is empty, and no edit or delete. Verify in the browser.
+- [x] 5.2 Build the detail page `/oportunidades/[id]` (W6): header with actions, Dados with gift items, and the Atividade timeline, newest first, with an icon for each of the seven entry types. Verify with OPP-2004 in the browser.
+- [x] 5.3 Add comments: a send button that stays disabled while the box is empty, and no edit or delete. Verify in the browser.
 
 ## 6. Dialogs and actions (`feat/funnel-actions`)
 

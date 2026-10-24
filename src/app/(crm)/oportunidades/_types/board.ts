@@ -39,6 +39,8 @@ export type OpportunityCardProps = {
   card: OpportunityCard;
   today: string | null;
   isOwnerVisible: boolean;
+  isOpen: boolean;
+  onOpen: (id: number) => void;
 };
 
 export type BoardColumnProps = {
@@ -47,6 +49,8 @@ export type BoardColumnProps = {
   isOwnerVisible: boolean;
   isAllClosed: boolean;
   onToggleAllClosed: () => void;
+  openId: number | null;
+  onOpen: (id: number) => void;
 };
 
 export type BoardToolbarProps = {
@@ -72,4 +76,10 @@ export type SelectProps = {
   value: string;
   onChange: (value: string) => void;
   children: ReactNode;
+};
+
+export type OpportunityPanelProps = {
+  id: number;
+  today: string | null;
+  onClose: () => void;
 };

@@ -1,21 +1,27 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useCallback, useMemo, type ReactNode } from "react";
 import { ErrorState } from "@/components/feedback/ErrorState";
 import { useOpportunities } from "@/hooks/opportunities/useOpportunities";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { useToday } from "@/hooks/useToday";
 import { useBoardFilters } from "../_hooks/useBoardFilters";
+import { useOpenOpportunity } from "../_hooks/useOpenOpportunity";
 import { groupByStage } from "../_utils/board";
 import { toListQuery } from "../_utils/filters";
+import { detailPath } from "../_utils/panel";
 import { BoardColumn } from "./BoardColumn";
 import { BoardEmpty } from "./BoardEmpty";
 import { BoardSkeleton } from "./BoardSkeleton";
 import { BoardToolbar } from "./BoardToolbar";
+import { OpportunityPanel } from "./OpportunityPanel";
 
 export const Board = () => {
   const { user, users, isPending: isUserPending, refetch: refetchUsers } = useCurrentUser();
   const { filters, setFilters } = useBoardFilters();
+  const { openId, setOpenId } = useOpenOpportunity();
+  const router = useRouter();
   const today = useToday();
   const isManager = user?.role === "MANAGER";
 
@@ -36,6 +42,13 @@ export const Board = () => {
     () => setFilters({ allClosed: !filters.allClosed }),
     [filters.allClosed, setFilters],
   );
+
+  const handleOpen = useCallback(
+    (id: number) => (id === openId ? router.push(detailPath(id)) : setOpenId(id)),
+    [openId, router, setOpenId],
+  );
+
+  const handleClosePanel = useCallback(() => setOpenId(null), [setOpenId]);
 
   const renderMessage = (children: ReactNode) => <div className="max-w-160">{children}</div>;
 
@@ -68,6 +81,8 @@ export const Board = () => {
           isOwnerVisible={isManager}
           isAllClosed={filters.allClosed}
           onToggleAllClosed={handleToggleAllClosed}
+          openId={openId}
+          onOpen={handleOpen}
         />
       ))}
     </div>
@@ -81,16 +96,22 @@ export const Board = () => {
     return renderColumns();
   };
 
+  const renderPanel = () =>
+    openId !== null && user && <OpportunityPanel id={openId} today={today} onClose={handleClosePanel} />;
+
   return (
-    <>
-      <h1 className="sr-only">Oportunidades</h1>
-      <BoardToolbar
-        filters={filters}
-        onChange={setFilters}
-        team={team}
-        needsAttention={opportunities.data?.needsAttention}
-      />
-      <div className="flex-1 overflow-x-auto px-6 py-5">{renderContent()}</div>
-    </>
+    <div className="flex flex-1">
+      <div className="flex min-w-0 flex-1 flex-col">
+        <h1 className="sr-only">Oportunidades</h1>
+        <BoardToolbar
+          filters={filters}
+          onChange={setFilters}
+          team={team}
+          needsAttention={opportunities.data?.needsAttention}
+        />
+        <div className="flex-1 overflow-x-auto px-6 py-5">{renderContent()}</div>
+      </div>
+      {renderPanel()}
+    </div>
   );
 };
