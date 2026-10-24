@@ -16,7 +16,7 @@ Each group from 2 to 8 is one slice: one branch off `develop` and one PR into `d
 - [x] 2.1 Move `app/` to `src/app/`, delete `src/pages/`, point the `@/*` alias to `./src/*`, and fix the `/design-tokens` imports. Make the design-system tests scan `src/` and read `src/app/globals.css`, and update the paths in `CLAUDE.md`. Verify:
   - `npm test`, `npm run typecheck`, and `npm run build` pass;
   - a hex color added to a file in `src/components/` makes `npm test` fail.
-- [ ] 2.2 Install `@tanstack/react-query`, `axios`, `react-hook-form`, `zod`, `@hookform/resolvers`, `@radix-ui/react-dialog`, and `@radix-ui/react-dropdown-menu`. Add the `/api/:path*` rewrite to `${API_URL}/api/:path*` and an `.env.example` with `API_URL`. Verify that `http://localhost:3000/api/users` returns the users while the `crm-api` runs.
+- [x] 2.2 Install `@tanstack/react-query`, `axios`, `react-hook-form`, `zod`, `@hookform/resolvers`, `@radix-ui/react-dialog`, and `@radix-ui/react-dropdown-menu`. Add the `/api/:path*` rewrite to `${API_URL}/api/:path*` and an `.env.example` with `API_URL`. Verify that `http://localhost:3000/api/users` returns the users while the `crm-api` runs.
 - [x] 2.3 Add `src/lib/`:
   - `axios.ts` with the `X-User-Id` request interceptor and the `X-Today` response interceptor;
   - `react-query.ts`;
