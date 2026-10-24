@@ -1,6 +1,6 @@
 import type { LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
-import type { FollowUpChannel, FunnelStage, LossReason, MissingField, OpportunitySummary } from "@/types/api";
+import type { FollowUpChannel, FunnelStage, LossReason, MissingField, MoveInput, OpportunitySummary } from "@/types/api";
 
 export type ActionPath = "follow-up" | "snooze" | "lose" | "comments";
 
@@ -82,4 +82,8 @@ export type LossReasonFieldValues = {
 
 export type OpportunityNoticeProps = {
   opportunity: OpportunitySummary;
+};
+
+export type MoveRequest = MoveInput & {
+  id: number;
 };

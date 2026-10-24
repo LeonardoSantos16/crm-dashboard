@@ -87,9 +87,9 @@ Deferred to a later change: the "Nova oportunidade" dialog (W11) and the edit mo
 
 ## 7. Drag and drop (`feat/funnel-dnd`)
 
-- [ ] 7.1 Check the current `@dnd-kit` version against React 19, install it, and drag cards on viewports 768px and wider, reusing the optimistic move from 6.2. Verify with a manual drag in the browser.
-
-Deferred: dimming forbidden columns and the "Marcar como perdida" drop area during the drag (W2), and opening the missing-data dialog on drop. A blocked drop restores the card and shows the reason in a toast.
+- [x] 7.1 Check the current `@dnd-kit` version against React 19, install it, and drag cards on viewports 768px and wider, reusing the optimistic move from 6.2. Verify with a manual drag in the browser.
+- [ ] 7.2 While dragging, dim forbidden columns with the icon and reason, and show the "Marcar como perdida" drop area, which opens the lost dialog. Verify against W2 in the browser, with the mouse and with the keyboard sensor.
+- [ ] 7.3 Open the missing-data dialog (W9) when a card with `missing` is dropped on Apresentação de Orçamento, and restore the card on cancel. Verify both paths in the browser.
 
 ## 8. Mobile (`feat/funnel-mobile-minimal`)
 
