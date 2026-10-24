@@ -46,7 +46,7 @@ export function parseColorTokens(css: string): Record<string, string> {
 }
 
 export function readColorTokens(): Record<string, string> {
-  return parseColorTokens(readFileSync(join(process.cwd(), "app", "globals.css"), "utf8"));
+  return parseColorTokens(readFileSync(join(process.cwd(), "src", "app", "globals.css"), "utf8"));
 }
 
 function channel(value: number) {

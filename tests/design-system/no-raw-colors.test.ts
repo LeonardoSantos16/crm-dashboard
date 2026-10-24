@@ -3,7 +3,7 @@ import { join, relative } from "node:path";
 import { describe, expect, it } from "vitest";
 
 const ROOT = process.cwd();
-const SCANNED_DIRS = ["app", "components"];
+const SCANNED_DIRS = ["src"];
 const EXTENSIONS = [".ts", ".tsx", ".css"];
 
 const ALLOWLIST: string[] = [];
