@@ -109,7 +109,7 @@ export const Board = () => {
           team={team}
           needsAttention={opportunities.data?.needsAttention}
         />
-        <div className="flex-1 overflow-x-auto px-6 py-5">{renderContent()}</div>
+        <div className="flex-1 overflow-x-auto px-4 py-5 md:px-6">{renderContent()}</div>
       </div>
       {renderPanel()}
     </div>

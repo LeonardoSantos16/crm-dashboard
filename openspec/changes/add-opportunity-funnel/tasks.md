@@ -96,11 +96,13 @@ Each group from 2 to 8 is one slice: one branch off `develop` and one PR into `d
 - [ ] 7.2 While dragging, dim forbidden columns with the icon and reason, and show the "Marcar como perdida" drop area, which opens the lost dialog. Verify against W2 in the browser, with the mouse and with the keyboard sensor.
 - [ ] 7.3 Open the missing-data dialog (W9) when a card with `missing` is dropped on Apresentação de Orçamento, and restore the card on cancel. Verify both paths in the browser.
 
-## 8. Mobile (`feat/funnel-mobile`)
+## 8. Mobile (`feat/funnel-mobile-minimal`)
 
-- [ ] 8.1 Add the mobile bottom bar and the menu that holds the identity selector below 768px. Verify against W4 at 375px.
-- [ ] 8.2 Build the mobile board: scrollable stage tabs (Contato · Orçamento · Follow-up · Forecast · Fechamento), one column at a time, and the filters bottom sheet. Verify against W4 at 375px.
-- [ ] 8.3 Make the panel and the edit modal full screen on mobile, and give the detail page the Dados and Atividade tabs and a fixed action bar (W7). Verify at 375px.
+Minimal scope: the screens stay usable at 375px without horizontal page scroll. The dedicated mobile layout (bottom bar, stage tabs, filters bottom sheet, detail tabs, fixed action bar) is out of scope and goes to the README as a next step.
+
+- [x] 8.1 Wrap the top bar below 768px: logo and actions on the first row, nav tabs on a second row; icon-only "Nova oportunidade", hidden bell and visually hidden "Entrando como:" below 640px. Verify at 375px.
+- [x] 8.2 Make the opportunity panel full screen below 768px, keeping the close button, Escape, and menus and dialogs above it. Verify at 375px.
+- [x] 8.3 Use 16px side gutters below 768px on the board, toolbar, and detail page, and keep toasts inside the viewport. Verify at 375px.
 
 ## 9. Integration check
 

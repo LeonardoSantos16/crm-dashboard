@@ -31,7 +31,7 @@ export const ToastProvider = ({ children }: ToastProviderProps) => {
   return (
     <ToastContext value={value}>
       {children}
-      <div className="pointer-events-none fixed right-4 bottom-4 z-50 flex w-full max-w-sm flex-col gap-2">
+      <div className="pointer-events-none fixed right-4 bottom-4 left-4 z-50 flex max-w-sm sm:left-auto sm:w-full flex-col gap-2">
         {toasts.map((toast) => (
           <div key={toast.id} className="pointer-events-auto">
             <Toast toast={toast} onDismiss={dismissToast} />
