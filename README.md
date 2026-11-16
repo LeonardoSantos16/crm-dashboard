@@ -1,6 +1,8 @@
-# crm-dashboard
+# Funil CRM: dashboard
 
-Interface do CRM da Nobre Brindes: o funil de oportunidades em Kanban, com busca, filtros, detalhe da oportunidade e as ações do alerta de retorno.
+Interface de um CRM para o time comercial de uma empresa de brindes personalizados: o funil de oportunidades em Kanban, com busca, filtros, detalhe da oportunidade e as ações do alerta de retorno.
+
+Projeto desenvolvido como case técnico num processo seletivo para Desenvolvedor(a) Full Stack Pleno. O resumo do problema está em [`docs/case-tecnico.md`](docs/case-tecnico.md).
 
 Construída com Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4 e TanStack Query. Os dados e todas as regras de negócio vêm da [`crm-api`](../crm-api), que fica num repositório separado.
 
@@ -161,6 +163,6 @@ O projeto foi desenvolvido com o Claude Code, num fluxo de especificação antes
 - **OpenSpec:** cada entrega começou como uma change em `openspec/changes/`, com proposta, design, specs e tarefas. As decisões de tela saíram de uma entrevista de design registrada no `design.md` utilizando a skill grill-me. utilizei o OpenSpec para implementar uma abordagem SDD no projeto.
 - **Claude Design:** os wireframes do `design.md` foram protótipos no Claude Design. Os ajustes aceitos entraram nos tokens do `@theme` e na spec do design system, nunca direto num componente.
 - **Commits e PRs:** textos de PRs e mensagens de commit escritos com auxílio do Claude Code, que também sugeriu e aplicou, a meu pedido, o agrupamento das alterações em commits e/ou ammends
-- **Design system:** os design tokens dos sites nobrebrindes.com.br e coroadefloresnobre.com.br foram extraídos com o auxílio do Claude Code e serviram de base para a montagem do design system
+- **Design system:** os design tokens de sites de referência foram extraídos com o auxílio do Claude Code e serviram de base para a montagem do design system
 - **Implementação:** por falta de tempo, muitos componentes e hooks foram gerados inicialmente com o Claude Code (a partir das specs e protótipo em uma abordagem SDD) e depois refatorados por mim. Em um fluxo normal, eu usaria o Claude Code apenas para extrair o CSS e criaria os componentes manualmente. Isso evitaria o retrabalhado
 

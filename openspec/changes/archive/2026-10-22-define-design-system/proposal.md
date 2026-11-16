@@ -6,14 +6,14 @@ The CRM has no visual foundation yet: `app/globals.css` still holds the create-n
 
 ## Brand context
 
-The CRM inherits the identity of Nobre Brindes (nobrebrindes.com.br), checked against the group's other site (coroadefloresnobre.com.br). Both use a green primary, a gold accent, and a crown in the logo. Values are taken from the sites' CSS. Anything not found there is marked as a new decision in `design.md`.
+The CRM takes its visual identity from a reference brand: a green primary and a gold accent. Values are taken from the reference sites' CSS. Anything not found there is marked as a new decision in `design.md`.
 
-- **Audience:** Nobre Brindes salespeople, who use the CRM all day on desktop and on their phones between calls, plus the sales manager who follows the team. They are internal, repeat users. They value speed over discovery.
+- **Audience:** Promotional-gift salespeople, who use the CRM all day on desktop and on their phones between calls, plus the sales manager who follows the team. They are internal, repeat users. They value speed over discovery.
 - **Personality:** objective, reliable, organized.
-- **Voice (pt-BR UI text):** direct and concrete, like the Nobre Brindes site. Use verbs and real numbers, never exclamation marks: "Parada há 6 dias", "Adiada até 25/10", "Marcar como retornado".
+- **Voice (pt-BR UI text):** direct and concrete, like the reference site. Use verbs and real numbers, never exclamation marks: "Parada há 6 dias", "Adiada até 25/10", "Marcar como retornado".
 - **Anti-references:**
   - Generic AI dashboards: gradients, decorative metric cards, glassmorphism, purple accents.
-  - The e-commerce urgency tone of the flower site ("melhor preço", all-caps calls to action).
+  - The e-commerce urgency tone of retail sites ("melhor preço", all-caps calls to action).
   - Color used as decoration.
 - **Principles:**
   1. Urgency is readable at a glance. Hierarchy and clarity come before aesthetics.
@@ -26,7 +26,7 @@ The CRM inherits the identity of Nobre Brindes (nobrebrindes.com.br), checked ag
 
 - Replace the create-next-app styles with design tokens in the Tailwind 4 `@theme` block of `app/globals.css`. This block becomes the single source of truth for colors, fonts, type scale, radii, shadows, and motion. Tailwind's default color palette and font families are cleared, so off-token utilities do not exist.
 - Light theme only. Remove the dark-mode media query.
-- Brand palette from Nobre Brindes: `paper`, `paper-shade`, `surface`, `ink`, `ink-soft`, `forest`, `forest-deep`, `moss`, `crown`, `border`.
+- Brand palette from the reference site: `paper`, `paper-shade`, `surface`, `ink`, `ink-soft`, `forest`, `forest-deep`, `moss`, `crown`, `border`.
   - Add `border-strong`, a new token: the site's input border (1.48:1) fails the 3:1 non-text contrast rule.
 - State colors for the CRM, each as a `fg` / `bg` / `solid` triple: `attention`, `error`, `success` (Fechamento, reusing the brand green), `lost` (Perdida), `snoozed` (adiado), `escalated` (escalonado).
 - Typography through `next/font/google`:
@@ -34,7 +34,7 @@ The CRM inherits the identity of Nobre Brindes (nobrebrindes.com.br), checked ag
   - Montserrat with tabular numbers for codes, currency, dates, and uppercase labels.
   - Geist is removed.
 - Interface rules: control heights of 36px on desktop and 44px on mobile, a 4px radius for cards, buttons, and inputs, full radius for chips and badges, the site's card and lift shadows, and a visible focus ring.
-- Base components for the required feedback patterns: `StatusBadge`, `Skeleton`, `ErrorState`, `EmptyState`. Icons come from `lucide-react`, the library the Nobre Brindes site uses.
+- Base components for the required feedback patterns: `StatusBadge`, `Skeleton`, `ErrorState`, `EmptyState`. Icons come from `lucide-react`, the library the reference site uses.
 - A development-only `/design-tokens` route that renders the palette, state colors, type scale, and feedback components. It returns 404 in production.
 - Vitest with automated checks:
   - the contrast of every declared color pair;

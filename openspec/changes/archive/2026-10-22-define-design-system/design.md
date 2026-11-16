@@ -6,7 +6,7 @@
 - **Tailwind wiring:** Tailwind is compiled by the `@tailwindcss/turbopack` loader declared in `next.config.ts`. There is no PostCSS config.
 - **Current styles:** `app/globals.css` and `app/layout.tsx` are the create-next-app defaults: Geist fonts, two color variables, and a dark-mode media query.
 - **Tests:** there is no test runner yet.
-- **Source of the values:** the brand values come from the CSS of nobrebrindes.com.br, read on 2026-10-22. That site uses Tailwind 4 with shadcn-style tokens in `:root`. The group's flower site (coroadefloresnobre.com.br, WordPress with Elementor and WoodMart) was used to confirm the shared identity: green primary, gold accent, crown in the logo, Montserrat, uppercase labels. One color, `#1A2E4A`, also comes from it.
+- **Source of the values:** the brand values come from the CSS of a reference brand site, read on 2026-10-22. That site uses Tailwind 4 with shadcn-style tokens in `:root`. A second site of the same brand was used to confirm the shared identity: green primary, gold accent, Montserrat, uppercase labels. One color, `#1A2E4A`, also comes from it.
 - **Business rules:** the alert states come from the automation decisions: attention after inactivity, snooze, and escalation to the manager. This change only defines how they look. See proposal.md (Why, Brand context).
 
 ## Goals / Non-Goals
@@ -27,7 +27,7 @@
 
 Every color sits in `@theme` as `--color-<name>`, which generates `bg-*`, `text-*`, `border-*`, and the other color utilities. The block starts with `--color-*: initial;`, which clears Tailwind's default palette. `--color-white` and `--color-transparent` are then declared explicitly.
 
-**Brand (from nobrebrindes.com.br `:root`)**
+**Brand (from the reference site `:root`)**
 
 | Token | Value | Use |
 |---|---|---|
@@ -61,7 +61,7 @@ Every color sits in `@theme` as `--color-<name>`, which generates `bg-*`, `text-
 
 Where each value comes from:
 - `success` reuses brand tokens: `forest-deep` on `moss`, with `forest` as the solid tone.
-- `snoozed-fg` is the navy `#1A2E4A` from the flower site's Elementor kit. The background and solid tones are new.
+- `snoozed-fg` is the navy `#1A2E4A` from the second reference site. The background and solid tones are new.
 - `error` replaces the site's `--destructive` (#E40014). That color passes AA at 4.87:1, but at full saturation it dominates a dense screen.
 
 Alternatives considered:
@@ -99,7 +99,7 @@ Pairs that fail and are excluded by rule:
 |---|---|
 | `crown` / `surface` | 1.77 |
 | site `sprout` #62E590 / white | 1.60 |
-| flower site `#83B735` / white | 2.39 |
+| second reference site `#83B735` / white | 2.39 |
 | WhatsApp `#25D366` / white | 1.98 |
 
 `sprout` is not carried into the CRM.
@@ -176,7 +176,7 @@ These live in `components/feedback/`, one file each, and are server-compatible u
 - **`EmptyState`** takes `message` and an optional `action: { label, onClick }`.
   - Uses neutral `text-ink-soft` and no state colors.
 
-Icons come from `lucide-react`, which the Nobre Brindes site uses (`class="lucide lucide-*"` in its HTML). Alternative considered: inline SVGs, rejected because they would need hand-maintained paths for six or more icons.
+Icons come from `lucide-react`, which the reference site also uses. Alternative considered: inline SVGs, rejected because they would need hand-maintained paths for six or more icons.
 
 ### 7. Token enforcement
 
