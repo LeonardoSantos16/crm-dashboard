@@ -9,7 +9,7 @@ The follow-up automation (problem 4 of the case) shapes these screens. Its rules
 ## What Changes
 
 - **App shell:**
-  - A dark top bar with the "Nobre CRM" logo, the Oportunidades tab, and a demo identity selector ("Entrando como").
+  - A dark top bar with the "Funil CRM" logo, the Oportunidades tab, and a demo identity selector ("Entrando como").
   - On mobile, the bar wraps into two rows so the page never scrolls sideways.
 - **Identity without login:** the selected user is sent to the API with every request, and the API filters opportunities by role: a salesperson sees their own, a manager sees the team's. No login screen is built.
 - **Oportunidades (Kanban):**

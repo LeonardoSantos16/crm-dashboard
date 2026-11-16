@@ -1,42 +1,43 @@
-# CASE TÉCNICO — Desenvolvedor(a) Full Stack Pleno
+# Case técnico: resumo do problema
 
----
+Resumo, com minhas palavras, do case técnico que deu origem a este projeto.
 
-## 01. O case
+## Contexto
 
-Você acaba de entrar no time de tecnologia do Grupo Nobre. Sua missão é criar a primeira versão de um CRM interno para o time comercial da Nobre Brindes: acompanhar oportunidades de venda, movê-las pelo funil e identificar negociações que precisam de atenção antes que a venda seja perdida. Para isso, responda a três perguntas por meio de uma solução funcional:
+Um time comercial de uma empresa de brindes personalizados precisa da primeira versão de um CRM interno para acompanhar oportunidades de venda, movê-las pelo funil e identificar as negociações que precisam de atenção antes que a venda seja perdida.
 
-### 1. PRODUTO & UX | Como você torna a ferramenta clara e fácil de usar?
+## Produto e UX
 
-Crie uma interface com Next.js, React, TypeScript e Tailwind CSS para listar, pesquisar, filtrar e consultar oportunidades, além de movê-las de etapa. A visualização principal do funil deve ser um Kanban, com uma coluna por etapa e as oportunidades como cards que podem ser movidos entre colunas. Mostre claramente carregamento, erros, ausência de resultados e oportunidades que exigem atenção. O que avaliamos é se um vendedor encontra rápido a negociação que precisa trabalhar hoje. UX (experiência do usuário) significa ajudar a pessoa a encontrar a informação e realizar a tarefa com clareza, não apenas deixar a tela bonita.
+- Interface em Next.js, React, TypeScript e Tailwind CSS para listar, buscar, filtrar e consultar oportunidades, e para movê-las de etapa.
+- O funil é um Kanban: uma coluna por etapa e um card por oportunidade.
+- Carregamento, erros, ausência de resultados e oportunidades que exigem atenção precisam estar claros.
+- O critério é se o vendedor encontra rápido a negociação que precisa trabalhar hoje.
 
-### 2. ENGENHARIA | Como você garante regras corretas e dados consistentes?
+## Engenharia
 
-Implemente uma API REST com Node.js e persistência em PostgreSQL. O funil tem cinco etapas, na ordem:
+API REST em Node.js com PostgreSQL. O funil tem cinco etapas, nesta ordem:
 
 **Primeiro Contato → Apresentação de Orçamento → Follow-up → Forecast → Fechamento**
 
-Uma oportunidade também pode ser marcada como **Perdida**. Fechamento e Perdida são estados finais. Nem toda mudança de etapa é válida. Algumas regras são dadas; as demais são suas para definir e justificar:
+Uma oportunidade também pode ser marcada como **Perdida**. Fechamento e Perdida são estados finais. Regras dadas:
 
-- Uma oportunidade só avança para Apresentação de Orçamento se tiver um valor estimado e pelo menos um item de brinde informado.
-- Uma oportunidade só entra em Fechamento a partir de Forecast.
-- Perdida pode ser aplicada a partir de qualquer etapa não final e exige um motivo de perda.
-- Retornos de etapa: decida quais fazem sentido num processo comercial real (por exemplo, voltar de Follow-up para Apresentação de Orçamento quando o cliente pede revisão) e quais não fazem. Documente a sua decisão.
+- Entrar em Apresentação de Orçamento exige valor estimado e pelo menos um item de brinde.
+- Fechamento só a partir de Forecast.
+- Perdida vale a partir de qualquer etapa não final e exige um motivo.
+- Quais retornos de etapa são permitidos fica a meu critério, com a decisão documentada.
 
-As regras devem ser validadas no backend, nunca apenas na tela. Registre o histórico de mudanças de etapa de cada oportunidade (quando, de onde, para onde). Não exponha credenciais e descreva como protegeria a API em produção; autenticação completa não é exigida.
+As regras são validadas no backend, e cada mudança de etapa fica registrada no histórico (quando, de onde, para onde).
 
-### 3. AUTOMAÇÃO & QUALIDADE | Como você antecipa riscos e valida a solução?
+## Automação
 
-Quatro problemas reais da nossa operação comercial:
+Escolher um de quatro problemas comerciais e implementar uma automação integrada ao CRM, com testes das regras críticas:
 
-1. O lead precisa ser atendido rápido. Como evitar que ele espere pelo primeiro contato e manter o SLA baixo?
-2. Quanto mais o vendedor souber sobre a empresa do lead, melhor o atendimento e maior a chance de conversão. Como facilitar esse trabalho?
-3. A ligação com o lead segue um roteiro para coletar informações do negócio. Como tornar essas informações acessíveis depois da ligação?
-4. Com alto volume de atendimentos, é fácil esquecer de dar retorno a um lead. Como ajudar o vendedor a se organizar?
+1. Reduzir o tempo de espera do lead pelo primeiro contato.
+2. Facilitar a pesquisa sobre a empresa do lead.
+3. Tornar acessíveis as informações coletadas na ligação.
+4. Ajudar o vendedor a não esquecer de dar retorno ao lead.
 
-Escolha um desses problemas e implemente uma automação funcional integrada ao seu CRM, na stack que preferir dentro das que já usamos (Node.js/TypeScript ou Python), com testes para as regras críticas. Para os outros três, descreva no README como você resolveria e uma ideia de implementação. Use Git e documente execução, decisões, limitações e uso de IA (se houver).
-
----
+Escolhi o problema 4. A descrição está no [README](../README.md#automação-alerta-de-retorno-problema-4).
 
 ## Dados fictícios
 
@@ -52,10 +53,4 @@ Escolha um desses problemas e implemente uma automação funcional integrada ao 
 | OPP-2006 | Escola Saber | Mochila infantil | 250 | 11.500 | Carla | 09/10/2026 | 16/10/2026 | 17/10/2026 | Fechamento |
 | OPP-2007 | Padaria do Bairro | Caneta promocional | 50 | 350 | Ana | 01/10/2026 | 08/10/2026 | 20/10/2026 | Perdida |
 
-*Campos em branco são intencionais: trate-os como parte do problema.*
-
----
-
-## Entrega & o que avaliamos
-
-Entregue o código, a estrutura/carga inicial do banco, a automação escolhida, os testes e um README com instruções de execução. Não precisa publicar em produção nem integrar um CRM real. Avaliaremos como você pensa, prioriza, estrutura, valida e explica as decisões, não a quantidade de funcionalidades ou de telas. Onde o enunciado deixa uma escolha aberta (retornos de etapa, qual problema automatizar, organização do código), queremos ver a sua decisão e o raciocínio por trás dela.
+Os campos em branco são intencionais e fazem parte do problema.

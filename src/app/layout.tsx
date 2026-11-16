@@ -15,7 +15,7 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: { default: "Nobre CRM", template: "%s · Nobre CRM" },
+  title: { default: "Funil CRM", template: "%s · Funil CRM" },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

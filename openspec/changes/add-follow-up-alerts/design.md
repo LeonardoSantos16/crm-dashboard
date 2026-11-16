@@ -38,7 +38,7 @@ OPP-2010 to OPP-2013 are illustrative opportunities added so that Ana's list sho
 
 ```text
 +----------------------------------------------------------------------------------------------------------------------------------+
-| ♛ Nobre CRM         Oportunidades   Retornos                  [+ Nova oportunidade]   [sino•]   Entrando como: Ana (vendedora) ▾ |
+| ▽ Funil CRM         Oportunidades   Retornos                  [+ Nova oportunidade]   [sino•]   Entrando como: Ana (vendedora) ▾ |
 |                                     ‾‾‾‾‾‾‾‾                                                                   MODO DEMONSTRAÇÃO |
 +----------------------------------------------------------------------------------------------------------------------------------+
 +----------------------------------------------------------------------------------------------------------------------------------+
@@ -89,7 +89,7 @@ OPP-2010 to OPP-2013 are illustrative opportunities added so that Ana's list sho
 
 ```text
 +----------------------------------------------------------------------------------------------------------------------------------+
-| ♛ Nobre CRM         Oportunidades   Retornos   Time           [+ Nova oportunidade]   [sino•]   Entrando como: Marcos (gestor) ▾ |
+| ▽ Funil CRM         Oportunidades   Retornos   Time           [+ Nova oportunidade]   [sino•]   Entrando como: Marcos (gestor) ▾ |
 |                                     ‾‾‾‾‾‾‾‾                                                                   MODO DEMONSTRAÇÃO |
 +----------------------------------------------------------------------------------------------------------------------------------+
 +----------------------------------------------------------------------------------------------------------------------------------+
@@ -127,7 +127,7 @@ The filter sheet follows the same pattern as the board's (W4 in the funnel chang
 
 ```text
 +----------------------------------------+
-| ♛ Nobre CRM          [+]  [sino•]  [≡] |
+| ▽ Funil CRM          [+]  [sino•]  [≡] |
 |----------------------------------------|
 | [Buscar código ou empresa] [Filtros·0] |
 |----------------------------------------|
@@ -158,7 +158,7 @@ The filter sheet follows the same pattern as the board's (W4 in the funnel chang
 
 ```text
 +----------------------------------------------------------------------------------------------------------------------------------+
-| ♛ Nobre CRM         Oportunidades   Retornos   Time           [+ Nova oportunidade]   [sino•]   Entrando como: Marcos (gestor) ▾ |
+| ▽ Funil CRM         Oportunidades   Retornos   Time           [+ Nova oportunidade]   [sino•]   Entrando como: Marcos (gestor) ▾ |
 |                                                ‾‾‾‾                                                            MODO DEMONSTRAÇÃO |
 +----------------------------------------------------------------------------------------------------------------------------------+
 +----------------------------------------------------------------------------------------------------------------------------------+

@@ -7,7 +7,7 @@ Defines the frame every CRM screen lives in: the top bar, the navigation, and th
 ## ADDED Requirements
 
 ### Requirement: Top bar
-Every screen SHALL show a top bar with the "Nobre CRM" logo, the "Oportunidades" navigation tab, and the identity selector. The bar follows the design-system navigation treatment.
+Every screen SHALL show a top bar with the "Funil CRM" logo, the "Oportunidades" navigation tab, and the identity selector. The bar follows the design-system navigation treatment.
 
 #### Scenario: Top bar contents on desktop
 - **WHEN** a salesperson opens any screen on a 1280px-wide viewport

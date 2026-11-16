@@ -63,7 +63,7 @@ The manager view shows every element. A salesperson sees the same screen with th
 
 ```text
 +----------------------------------------------------------------------------------------------------------------------------------------------+
-| ♛ Nobre CRM         Oportunidades   Retornos   Time                        [+ Nova oportunidade]   [sino]   Entrando como: Marcos (gestor) ▾ |
+| ▽ Funil CRM         Oportunidades   Retornos   Time                        [+ Nova oportunidade]   [sino]   Entrando como: Marcos (gestor) ▾ |
 |                     ‾‾‾‾‾‾‾‾‾‾‾‾‾                                                                                          MODO DEMONSTRAÇÃO |
 +----------------------------------------------------------------------------------------------------------------------------------------------+
 +----------------------------------------------------------------------------------------------------------------------------------------------+
@@ -225,7 +225,7 @@ Cards are not draggable on mobile. Tapping a card opens the full-screen panel, w
 
 ```text
 +----------------------------------------+
-| ♛ Nobre CRM           [+]  [sino]  [≡] |
+| ▽ Funil CRM           [+]  [sino]  [≡] |
 |----------------------------------------|
 | [Buscar código ou empresa] [Filtros·1] |
 | [(!) Precisam de atenção (2)]          |
@@ -292,7 +292,7 @@ The panel opens on the right, about 420px wide, over the board. The open card ge
 
 ```text
 +----------------------------------------------------------------------------------------------------------------------------------+
-| ♛ Nobre CRM         Oportunidades   Retornos   Time            [+ Nova oportunidade]   [sino]   Entrando como: Marcos (gestor) ▾ |
+| ▽ Funil CRM         Oportunidades   Retornos   Time            [+ Nova oportunidade]   [sino]   Entrando como: Marcos (gestor) ▾ |
 |                     ‾‾‾‾‾‾‾‾‾‾‾‾‾                                                                              MODO DEMONSTRAÇÃO |
 +----------------------------------------------------------------------------------------------------------------------------------+
 +------------------------------------------------------------------------------+ +------------------------------------------------+
@@ -356,7 +356,7 @@ The proposal for OPP-2002 expired on 13/10, so the panel shows "Vencida há 2 di
 
 ```text
 +----------------------------------------------------------------------------------------------------------------------------------+
-| ♛ Nobre CRM         Oportunidades   Retornos   Time            [+ Nova oportunidade]   [sino]   Entrando como: Marcos (gestor) ▾ |
+| ▽ Funil CRM         Oportunidades   Retornos   Time            [+ Nova oportunidade]   [sino]   Entrando como: Marcos (gestor) ▾ |
 |                     ‾‾‾‾‾‾‾‾‾‾‾‾‾                                                                              MODO DEMONSTRAÇÃO |
 +----------------------------------------------------------------------------------------------------------------------------------+
 +----------------------------------------------------------------------------------------------------------------------------------+
