@@ -25,7 +25,7 @@
 - [x] 3.1 In `app/layout.tsx`:
   - replace Geist with Archivo (`axes: ['wdth']`) and Montserrat from `next/font/google`, exposed as `--font-archivo` and `--font-montserrat`;
   - set `lang="pt-BR"`;
-  - set the metadata title to "CRM Nobre Brindes".
+  - set the metadata title to "Funil CRM".
 
   Verify `npm run build` succeeds and no request to `fonts.googleapis.com` or `fonts.gstatic.com` appears in the browser network tab on `npm run start`.
 - [x] 3.2 Add the font and type tokens to `@theme`:
